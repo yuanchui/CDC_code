@@ -1,0 +1,21 @@
+{
+  "quick_commands": [
+    { "label": "普通模式", "command": "NORMAL_MODE" },
+    { "label": "快速模式", "command": "FAST_MODE" },
+    { "label": "单次扫描", "command": "SINGLE_SCAN" },
+    { "label": "开始", "command": "START" },
+    { "label": "停止", "command": "STOP" },
+    { "label": "状态", "command": "STATUS" },
+    { "label": "矩阵信息", "command": "MATRIX_INFO" },
+    { "label": "逐点(simple)", "command": "SET_FORMAT:simple" },
+    { "label": "表格(table)", "command": "SET_FORMAT:table" }
+  ],
+  "defaults": {
+    "rate_ms": 100,
+    "row": 0,
+    "col": 0,
+    "point_row": 0,
+    "point_col": 0
+  }
+}
+
