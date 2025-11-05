@@ -1,0 +1,100 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.31.0.0
+Copyright (C) 2020 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 1 yuanchu, 1, LIC=QF82M-XP395-JJE6S-LZT02-KYDS5-62VTM
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.31.0.0
+Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.31.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.7.0
+Dialog DLL:      TCM.DLL V1.46.0.0
+ 
+<h2>Project:</h2>
+E:\.User\Desktop\cdc-stm32\PCAP04电路STM32程序\PCAP04电路STM32程序_H库能正常运行PA\MDK-ARM\SPI.uvprojx
+Project File Date:  11/06/2025
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'SPI'
+assembling startup_stm32f103xe.s...
+compiling stm32f1xx_hal_msp.c...
+compiling main.c...
+../Core/Src/main.c(594): error:  #65: expected a ";"
+  unsigned char PCAP04_Config[] = {
+../Core/Src/main.c(608): warning:  #12-D: parsing restarts here after previous syntax error
+  };
+../Core/Src/main.c(789): error:  #20: identifier "PCAP04_Config" is undefined
+  		HAL_SPI_Transmit(&hspi1,&PCAP04_Config[i],1,10);
+../Core/Src/main.c(865): warning:  #177-D: variable "PCap04_data"  was declared but never referenced
+  	uint8_t PCap04_data = 0x00,Opcode = 0xA0,Address=0x00;
+../Core/Src/main.c(865): warning:  #177-D: variable "Opcode"  was declared but never referenced
+  	uint8_t PCap04_data = 0x00,Opcode = 0xA0,Address=0x00;
+../Core/Src/main.c(865): warning:  #177-D: variable "Address"  was declared but never referenced
+  	uint8_t PCap04_data = 0x00,Opcode = 0xA0,Address=0x00;
+../Core/Src/main.c(879): warning:  #177-D: variable "integer"  was declared but never referenced
+  	uint32_t integer,fractional;
+../Core/Src/main.c(879): warning:  #177-D: variable "fractional"  was declared but never referenced
+  	uint32_t integer,fractional;
+../Core/Src/main.c(880): warning:  #177-D: variable "integrated"  was declared but never referenced
+  	double integrated ;
+../Core/Src/main.c: 7 warnings, 2 errors
+compiling usart.c...
+compiling stm32f1xx_hal_gpio_ex.c...
+compiling spi.c...
+compiling stm32f1xx_it.c...
+compiling gpio.c...
+compiling stm32f1xx_hal_spi.c...
+compiling stm32f1xx_hal.c...
+compiling stm32f1xx_hal_gpio.c...
+compiling stm32f1xx_hal_cortex.c...
+compiling stm32f1xx_hal_rcc_ex.c...
+compiling stm32f1xx_hal_dma.c...
+compiling stm32f1xx_hal_rcc.c...
+compiling stm32f1xx_hal_pwr.c...
+compiling stm32f1xx_hal_flash.c...
+compiling stm32f1xx_hal_exti.c...
+compiling stm32f1xx_hal_tim.c...
+compiling stm32f1xx_hal_flash_ex.c...
+compiling stm32f1xx_hal_tim_ex.c...
+compiling stm32f1xx_hal_uart.c...
+compiling system_stm32f1xx.c...
+"SPI\SPI.axf" - 2 Error(s), 7 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.7.0.pack
+                ARM.CMSIS.5.7.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.4.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F1xx_DFP.2.2.0.pack
+                Keil.STM32F1xx_DFP.2.2.0
+                STMicroelectronics STM32F1 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_SPI
+  D:\Keil_v5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include
+  D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.4.0
+      Include file:  CMSIS\Core\Include\tz_context.h
+Target not created.
+Build Time Elapsed:  00:00:24
+</pre>
+</body>
+</html>
