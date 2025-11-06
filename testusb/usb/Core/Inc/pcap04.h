@@ -46,6 +46,7 @@ extern "C" {
 
 /* Exported variables --------------------------------------------------------*/
 extern uint32_t Value[6];
+extern uint8_t pcap04_use_float;  // Flag to enable float conversion (1=enabled, 0=disabled)
 
 /* Exported functions prototypes ---------------------------------------------*/
 char PCap04_Test(void);
@@ -57,6 +58,8 @@ void PCAP04_WriteFirmware(void);
 void PCap04_Init_Tow(void);
 uint32_t PCAP04_Read_CDC_Result_data(int Nun);
 double integrated_data(uint32_t data);
+void PCap04_SetMutualCapacitanceMode(void);
+void PCap04_SetFloatConversion(uint8_t enable);
 
 #ifdef __cplusplus
 }

@@ -37,6 +37,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 uint32_t Value[6];
+uint8_t pcap04_use_float = 1;  // Default: disable float conversion
 
 /************************* PCap04配置寄存器参数(Reg 0 .. 63) ****************************/
 uint8_t PCap02_config_reg[64] = 
@@ -61,7 +62,7 @@ uint8_t PCap02_config_reg[64] =
 
 unsigned char PCAP04_Config[] = {
  0x1D, 0x00, 0x58, 0x10,  
- 0x10, 0x00, 0x3F, 0x20,  
+ 0x13, 0x00, 0x0F, 0x20,  
  0x00, 0xD0, 0x07, 0x00,  
  0x00, 0x08, 0xFF, 0x03,  
  0x00, 0x24, 0x00, 0x00,  
@@ -354,5 +355,66 @@ double integrated_data(uint32_t data)
 	integrated =(double)(fractional/13421779.41088971);
 	integrated = (integrated + j);
 	return (double)integrated;
+}
+
+/**
+  * @brief  Configure PCAP04 for mutual capacitance mode
+  *         PC0/PC1 as reference capacitance, PC2/PC3 as measurement capacitance
+  *         PC4/PC5 disabled
+  * @retval None
+  */
+void PCap04_SetMutualCapacitanceMode(void)
+{
+	uint8_t Opcode = 0xA0;  // Write register opcode
+	uint8_t Address;
+	uint8_t data;
+	
+	// Register 4: Configure for floating (mutual) capacitance mode
+	// Current value: 0x10 = 0001 0000
+	// Set C_FLOATING (bit 0) = 1, C_DIFFERENTIAL (bit 1) = 1 for mutual capacitance
+	// New value: 0x13 = 0001 0011
+	Address = 4;
+	data = 0x13;  // C_FLOATING=1, C_DIFFERENTIAL=1, others unchanged
+	FLASH_SPI_CS_ENABLE();
+	HAL_SPI_Transmit(&hspi2, &Opcode, 1, 10);
+	HAL_SPI_Transmit(&hspi2, &Address, 1, 10);
+	HAL_SPI_Transmit(&hspi2, &data, 1, 10);
+	FLASH_SPI_CS_DISABLE();
+	HAL_Delay(10);
+	
+	// Register 6: Enable only PC0, PC1, PC2, PC3 (disable PC4, PC5)
+	// PC0=0x01, PC1=0x02, PC2=0x04, PC3=0x08
+	// Total: 0x0F = 0000 1111
+	Address = 6;
+	data = 0x0F;  // Enable PC0~PC3 only
+	FLASH_SPI_CS_ENABLE();
+	HAL_SPI_Transmit(&hspi2, &Opcode, 1, 10);
+	HAL_SPI_Transmit(&hspi2, &Address, 1, 10);
+	HAL_SPI_Transmit(&hspi2, &data, 1, 10);
+	FLASH_SPI_CS_DISABLE();
+	HAL_Delay(10);
+	
+	USB_Printf("PCAP04 configured for mutual capacitance mode\r\n");
+	USB_Printf("  PC0/PC1: Reference capacitance\r\n");
+	USB_Printf("  PC2/PC3: Measurement capacitance\r\n");
+	USB_Printf("  PC4/PC5: Disabled\r\n");
+}
+
+/**
+  * @brief  Set float conversion flag
+  * @param  enable: 1 to enable float conversion, 0 to disable (show raw hex)
+  * @retval None
+  */
+void PCap04_SetFloatConversion(uint8_t enable)
+{
+	pcap04_use_float = enable ? 1 : 0;
+	if(enable)
+	{
+		USB_Printf("PCAP04 float conversion: ENABLED\r\n");
+	}
+	else
+	{
+		USB_Printf("PCAP04 float conversion: DISABLED (raw hex)\r\n");
+	}
 }
 

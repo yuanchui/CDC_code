@@ -20,6 +20,7 @@
 #include "main.h"
 #include "i2c.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
@@ -29,6 +30,7 @@
 #include "pcap04.h"
 #include "cd74hc4067.h"
 #include "usbd_cdc_if.h"
+#include <stdio.h>  // For sprintf if needed
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,11 +93,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  HAL_GPIO_WritePin(IIC_EN_GPIO_Port, IIC_EN_Pin, GPIO_PIN_RESET);
   MX_USB_DEVICE_Init();
   MX_I2C1_Init();
   MX_SPI2_Init();
   MX_USART1_UART_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(IIC_EN_GPIO_Port, IIC_EN_Pin, GPIO_PIN_RESET);
 	// Initialize CD74HC4067 multiplexer
@@ -114,6 +116,17 @@ int main(void)
 	}
 	
 	PCap04_Init_Tow();
+	
+	// Configure PCAP04 for mutual capacitance mode
+	// PC0/PC1: Reference capacitance
+	// PC2/PC3: Measurement capacitance
+	// PC4/PC5: Disabled
+	PCap04_SetMutualCapacitanceMode();
+	HAL_Delay(50);
+	
+	// Set float conversion flag (1=enabled, 0=disabled)
+	PCap04_SetFloatConversion(1);  // Enable float conversion
+	HAL_Delay(50);
 	
 	// Wait additional time for USB to be fully ready
 	HAL_Delay(500);
@@ -149,12 +162,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if(PCap04_Test() != 1)
-    {
-      // Don't use printf here - USB may not be ready yet
-      // printf("通讯失败\n");
-    }
-    
+		
 		// Example 1: Scan specific row (Y=2, X scans 0-15)
 		USB_Printf("\n--- Scanning Row 2 ---\r\n");
 		MUX_ScanRow(2);
@@ -180,10 +188,22 @@ int main(void)
 		HAL_Delay(100);				
 
 		USB_Printf("Position [8,12] - PCAP04 Data:\r\n");
-		USB_Printf("Channel 0: %X\r\n", Value[0]);
-		USB_Printf("Channel 1: %X\r\n", Value[1]);
-		USB_Printf("Channel 2: %X\r\n", Value[2]);
-		USB_Printf("Channel 3: %X\r\n", Value[3]);
+		if(pcap04_use_float)
+		{
+			// Display as floating point values (pF)
+			USB_Printf("PC0 (Ref): %.2f pF\r\n", integrated_data(Value[0]));
+			USB_Printf("PC1 (Ref): %.2f pF\r\n", integrated_data(Value[1]));
+			USB_Printf("PC2 (Meas): %.2f pF\r\n", integrated_data(Value[2]));
+			USB_Printf("PC3 (Meas): %.2f pF\r\n", integrated_data(Value[3]));
+		}
+		else
+		{
+			// Display as raw hex values
+			USB_Printf("PC0 (Ref): 0x%08X\r\n", Value[0]);
+			USB_Printf("PC1 (Ref): 0x%08X\r\n", Value[1]);
+			USB_Printf("PC2 (Meas): 0x%08X\r\n", Value[2]);
+			USB_Printf("PC3 (Meas): 0x%08X\r\n", Value[3]);
+		}
 		
 		HAL_Delay(3000);
 		
