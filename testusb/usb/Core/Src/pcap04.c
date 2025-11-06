@@ -19,7 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "pcap04.h"
-#include <stdio.h>
+#include "usbd_cdc_if.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -176,7 +176,7 @@ char PCap04_Test(void)
 	FLASH_SPI_CS_DISABLE();
 	HAL_Delay(2);
 
-	printf("返回值:%X\n",text_receive);
+	USB_Printf("Return value: 0x%X\n",text_receive);
 	if(text_receive == 0x11)
 	{
 		return 1;
@@ -303,7 +303,6 @@ void PCAP04_WriteFirmware(void)
   */
 void PCap04_Init_Tow(void)
 {
-	uint8_t PCap04_data = 0x00,Opcode = 0xA0,Address=0x00;
 	PCap04_PowerON_RESET();
 	PCap04_INITIALIZE();
 	HAL_Delay(50);	
@@ -319,8 +318,6 @@ uint32_t PCAP04_Read_CDC_Result_data(int Nun)
 {
 	uint8_t u32Val[4]={0x00};
 	uint32_t dCapRatio = 0x00000000;
-	uint32_t integer,fractional;
-	double integrated ;
 	uint8_t data;
 
 	data = PCAP04_READ_RESULT + (Nun * 4);

@@ -1,0 +1,46 @@
+; pcap04_cdc.inf - Bind CDC ACM device (VID_0xCAFE, PID_0x4001) to usbser.sys
+; FriendlyName shows as "PCAP04 CDC Device (COMx)" under Ports
+
+[Version]
+Signature="$Windows NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%MFGNAME%
+DriverVer=11/03/2025,1.0.0.0
+
+[Strings]
+MFGNAME="STM32"
+DESCRIPTION="PCAP04 CDC Device"
+VIDPID="USB\VID_CAFE&PID_4001"
+
+[Manufacturer]
+%MFGNAME%=DeviceList,NTx86,NTamd64
+
+[DeviceList.NTx86]
+%DESCRIPTION%=Install, %VIDPID%
+
+[DeviceList.NTamd64]
+%DESCRIPTION%=Install, %VIDPID%
+
+[Install]
+Include=usbser.inf
+Needs=UsbSer_Install
+AddReg=AddRegSection
+
+[Install.Services]
+Include=usbser.inf
+AddService=usbser,0x00000002,UsbSerService
+
+[UsbSerService]
+DisplayName=%UsbSer.SVCDESC%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys
+
+[AddRegSection]
+HKR,,FriendlyName,,%DESCRIPTION% (COM%PortName%)
+
+[Strings]
+UsbSer.SVCDESC="USB Serial Driver"
+

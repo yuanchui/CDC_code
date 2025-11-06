@@ -24,6 +24,7 @@
 /* USER CODE BEGIN INCLUDE */
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,7 +96,8 @@ uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
-
+/* USB connection state flag */
+static volatile uint8_t usb_connected = 0;
 /* USER CODE END PRIVATE_VARIABLES */
 
 /**
@@ -154,6 +156,8 @@ static int8_t CDC_Init_FS(void)
   /* Set Application Buffers */
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
+  /* Mark USB as connected when CDC interface is initialized */
+  usb_connected = 1;
   return (USBD_OK);
   /* USER CODE END 3 */
 }
@@ -165,6 +169,8 @@ static int8_t CDC_Init_FS(void)
 static int8_t CDC_DeInit_FS(void)
 {
   /* USER CODE BEGIN 4 */
+  /* Mark USB as disconnected when CDC interface is deinitialized */
+  usb_connected = 0;
   return (USBD_OK);
   /* USER CODE END 4 */
 }
@@ -294,29 +300,78 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */
 
 /**
-  * @brief  Redirect printf to USB CDC
+  * @brief  Check if USB is connected and ready
+  * @retval 1 if connected and configured, 0 otherwise
   */
-int fputc(int ch, FILE *f)
+uint8_t USB_IsConnected(void)
 {
-  uint8_t temp = (uint8_t)ch;
-  
-  /* Wait for previous transmission to complete */
-  while(CDC_Transmit_FS(&temp, 1) == USBD_BUSY)
-  {
-    /* Wait */
-  }
-  
-  return ch;
+  /* Check both connection flag and device state */
+  return (usb_connected && (hUsbDeviceFS.dev_state == USBD_STATE_CONFIGURED));
 }
 
 /**
-  * @brief  Redirect scanf to USB CDC
+  * @brief  Send string via USB CDC
+  * @param  str: String to send
+  * @retval USBD_OK if successful, USBD_BUSY or USBD_FAIL otherwise
   */
-int fgetc(FILE *f)
+uint8_t USB_SendString(const char *str)
 {
-  uint8_t ch = 0;
-  /* This would need additional implementation for receiving */
-  return ch;
+  if(str == NULL)
+  {
+    return USBD_FAIL;
+  }
+  
+  /* Check if USB is connected and configured */
+  if(!USB_IsConnected())
+  {
+    /* USB not connected or not ready yet */
+    return USBD_FAIL;
+  }
+  
+  uint16_t len = 0;
+  while(str[len] != '\0' && len < APP_TX_DATA_SIZE - 1)
+  {
+    len++;
+  }
+  
+  if(len > 0)
+  {
+    return CDC_Transmit_FS((uint8_t*)str, len);
+  }
+  
+  return USBD_OK;
+}
+
+/**
+  * @brief  Send formatted string via USB CDC (similar to printf)
+  * @param  format: Format string
+  * @param  ...: Variable arguments
+  * @retval USBD_OK if successful, USBD_BUSY or USBD_FAIL otherwise
+  */
+uint8_t USB_Printf(const char *format, ...)
+{
+  char buffer[APP_TX_DATA_SIZE];
+  va_list args;
+  int len;
+  
+  /* Check if USB is connected and configured */
+  if(!USB_IsConnected())
+  {
+    /* USB not connected or not ready yet */
+    return USBD_FAIL;
+  }
+  
+  va_start(args, format);
+  len = vsnprintf(buffer, sizeof(buffer) - 1, format, args);
+  va_end(args);
+  
+  if(len > 0 && len < sizeof(buffer))
+  {
+    buffer[len] = '\0';
+    return CDC_Transmit_FS((uint8_t*)buffer, len);
+  }
+  
+  return USBD_FAIL;
 }
 
 /* USER CODE END PRIVATE_FUNCTIONS_IMPLEMENTATION */

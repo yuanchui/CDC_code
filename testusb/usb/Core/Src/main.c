@@ -26,9 +26,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdio.h>
 #include "pcap04.h"
 #include "cd74hc4067.h"
+#include "usbd_cdc_if.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,40 +97,48 @@ int main(void)
   MX_SPI2_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_GPIO_WritePin(IIC_EN_GPIO_Port, IIC_EN_Pin, GPIO_PIN_RESET);
 	// Initialize CD74HC4067 multiplexer
 	MUX_Init();
 	
-	// Wait for USB to be ready
-	HAL_Delay(1000);
+	// Wait for USB enumeration to complete (longer delay to allow Windows to detect)
+	HAL_Delay(2000);
+	
+	// Delay printf calls until USB is enumerated
+	// Note: printf uses USB CDC which needs to be enumerated first
 	
 	if(PCap04_Test() != 1)
 	{
-		printf("通讯失败\n");
+		// Don't use printf here - USB may not be ready yet
+		// printf("通讯失败\n");
 	}
 	
 	PCap04_Init_Tow();
 	
+	// Wait additional time for USB to be fully ready
+	HAL_Delay(500);
+	
+	// Now it's safe to use USB_Printf after USB enumeration
 	// CD74HC4067 Multiplexer Test Examples
-	printf("=== CD74HC4067 Multiplexer Test ===\r\n");
+	USB_Printf("=== CD74HC4067 Multiplexer Test ===\r\n");
 	
 	// Test 1: Single channel selection
-	printf("\n1. Testing single channel selection:\r\n");
+	USB_Printf("\n1. Testing single channel selection:\r\n");
 	MUX_SelectMode(MUX_MODE_X_ONLY, 5, 0);
 	HAL_Delay(500);
 	MUX_SelectMode(MUX_MODE_Y_ONLY, 0, 10);
 	HAL_Delay(500);
 	
 	// Test 2: Both channels
-	printf("\n2. Testing both channels:\r\n");
+	USB_Printf("\n2. Testing both channels:\r\n");
 	MUX_SelectMode(MUX_MODE_XY_BOTH, 3, 7);
 	HAL_Delay(500);
 	
 	// Test 3: Print status
-	printf("\n3. Current status:\r\n");
+	USB_Printf("\n3. Current status:\r\n");
 	MUX_PrintStatus();
 	
-	printf("\n=== Starting PCAP04 measurement with multiplexer ===\r\n");
+	USB_Printf("\n=== Starting PCAP04 measurement with multiplexer ===\r\n");
 
   /* USER CODE END 2 */
 
@@ -141,19 +149,24 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		
+    if(PCap04_Test() != 1)
+    {
+      // Don't use printf here - USB may not be ready yet
+      // printf("通讯失败\n");
+    }
+    
 		// Example 1: Scan specific row (Y=2, X scans 0-15)
-		printf("\n--- Scanning Row 2 ---\r\n");
+		USB_Printf("\n--- Scanning Row 2 ---\r\n");
 		MUX_ScanRow(2);
 		HAL_Delay(2000);
 		
 		// Example 2: Scan specific column (X=5, Y scans 0-15) 
-		printf("\n--- Scanning Column 5 ---\r\n");
+		USB_Printf("\n--- Scanning Column 5 ---\r\n");
 		MUX_ScanColumn(5);
 		HAL_Delay(2000);
 		
 		// Example 3: Select specific position and read PCAP04
-		printf("\n--- Reading PCAP04 at position [8,12] ---\r\n");
+		USB_Printf("\n--- Reading PCAP04 at position [8,12] ---\r\n");
 		MUX_SelectXY(8, 12);
 		HAL_Delay(100);  // Settling time
 		
@@ -166,11 +179,11 @@ int main(void)
 		Value[3] = PCAP04_Read_CDC_Result_data(3);
 		HAL_Delay(100);				
 
-		printf("Position [8,12] - PCAP04 Data:\r\n");
-		printf("Channel 0: %X\r\n", Value[0]);
-		printf("Channel 1: %X\r\n", Value[1]);
-		printf("Channel 2: %X\r\n", Value[2]);
-		printf("Channel 3: %X\r\n", Value[3]);
+		USB_Printf("Position [8,12] - PCAP04 Data:\r\n");
+		USB_Printf("Channel 0: %X\r\n", Value[0]);
+		USB_Printf("Channel 1: %X\r\n", Value[1]);
+		USB_Printf("Channel 2: %X\r\n", Value[2]);
+		USB_Printf("Channel 3: %X\r\n", Value[3]);
 		
 		HAL_Delay(3000);
 		
