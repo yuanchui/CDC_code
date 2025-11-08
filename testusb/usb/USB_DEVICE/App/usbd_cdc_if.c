@@ -25,6 +25,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
+#include "usb_common.h"
+#include "usb_template.h"
+#include "pcap04_reg.h"
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -261,6 +264,22 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
   /* USER CODE BEGIN 6 */
+  // Process received command
+  if (*Len > 0) {
+    // Null terminate the received string
+    Buf[*Len] = '\0';
+    
+    // Process command (remove trailing \r\n if present)
+    char *cmd = (char *)Buf;
+    while (*Len > 0 && (cmd[*Len - 1] == '\r' || cmd[*Len - 1] == '\n')) {
+      cmd[*Len - 1] = '\0';
+      (*Len)--;
+    }
+    
+    // Process command through USB common system
+    USB_ProcessCommand(cmd);
+  }
+  
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   return (USBD_OK);

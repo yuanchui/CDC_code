@@ -41,7 +41,8 @@ extern TIM_HandleTypeDef htim1;
 void MX_TIM1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void TIM1_Start(void);
+void TIM1_Stop(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
