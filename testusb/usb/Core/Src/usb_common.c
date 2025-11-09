@@ -742,12 +742,8 @@ static void USB_OutputScanData(uint8_t row, uint8_t col,
         snprintf(value_str, sizeof(value_str), format_str, float_data_cb);
     }
     
-    // Get mode string
-    const char *mode_str = (g_template_config.mode == TEMPLATE_MODE_RAW) ? "raw" : "quant";
-    
     // Output: CA:value,CB:value MODE:X,X:col,Y:row,value\r\n
-    USB_Printf("CA:%s,CB:%s MODE:%s,X:%d,Y:%d,%s\r\n", 
-               ca_value_str, cb_value_str, mode_str, col, row, value_str);
+    USB_Printf("X:%d,Y:%d CA:%s,CB:%s\r\n", col, row,ca_value_str, cb_value_str);
 }
 
 /**
