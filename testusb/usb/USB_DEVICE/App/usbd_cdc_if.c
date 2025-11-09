@@ -340,10 +340,130 @@ uint8_t USB_SendString(const char *str)
   
   if(len > 0)
   {
-    return CDC_Transmit_FS((uint8_t*)str, len);
+    uint8_t result;
+    uint32_t timeout = 0;
+    
+    /* Wait for previous transmission to complete with timeout */
+    do {
+      result = CDC_Transmit_FS((uint8_t*)str, len);
+      if(result == USBD_BUSY)
+      {
+        HAL_Delay(1);
+        timeout++;
+        /* Timeout after 100ms to avoid blocking forever */
+        if(timeout > 100)
+        {
+          return USBD_FAIL;
+        }
+      }
+    } while(result == USBD_BUSY);
+    
+    return result;
   }
   
   return USBD_OK;
+}
+
+/**
+  * @brief  Send long string via USB CDC (splits into chunks if needed)
+  * @param  str: String to send
+  * @retval USBD_OK if successful, USBD_FAIL otherwise
+  */
+uint8_t USB_SendLongString(const char *str)
+{
+  if(str == NULL)
+  {
+    return USBD_FAIL;
+  }
+  
+  /* Check if USB device is configured and ready */
+  if(hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED)
+  {
+    return USBD_FAIL;
+  }
+  
+  // Calculate total length
+  uint16_t total_len = 0;
+  const char *p = str;
+  while(*p != '\0' && total_len < APP_TX_DATA_SIZE * 10)  // Safety limit
+  {
+    total_len++;
+    p++;
+  }
+  
+  // If string fits in one chunk, use USB_SendString
+  if(total_len < APP_TX_DATA_SIZE - 1)
+  {
+    return USB_SendString(str);
+  }
+  
+  // Otherwise, split into chunks
+  p = str;
+  uint16_t chunk_size = APP_TX_DATA_SIZE - 1;  // Leave 1 byte for safety
+  uint8_t result = USBD_OK;
+  uint32_t timeout;
+  
+  while(*p != '\0' && result == USBD_OK)
+  {
+    uint16_t len = 0;
+    const char *chunk_start = p;
+    const char *chunk_end = p;
+    
+    // Calculate chunk length
+    while(*chunk_end != '\0' && len < chunk_size)
+    {
+      chunk_end++;
+      len++;
+    }
+    
+    // If we didn't reach end of string, try to break at newline
+    if(*chunk_end != '\0' && len > 0)
+    {
+      // Look backwards for last newline in chunk
+      const char *search_ptr = chunk_end - 1;
+      uint16_t search_len = len;
+      while(search_ptr >= chunk_start && *search_ptr != '\n' && *search_ptr != '\r')
+      {
+        search_ptr--;
+        search_len--;
+      }
+      
+      // If found newline, use it as break point
+      if(search_ptr >= chunk_start)
+      {
+        len = search_len;
+        chunk_end = search_ptr + 1;  // Include the newline
+      }
+    }
+    
+    // Send chunk
+    if(len > 0)
+    {
+      timeout = 0;
+      do {
+        result = CDC_Transmit_FS((uint8_t*)chunk_start, len);
+        if(result == USBD_BUSY)
+        {
+          HAL_Delay(1);
+          timeout++;
+          if(timeout > 100)
+          {
+            return USBD_FAIL;
+          }
+        }
+      } while(result == USBD_BUSY);
+      
+      // Move to next chunk
+      p = chunk_end;
+    }
+    else
+    {
+      // No progress, break to avoid infinite loop
+      break;
+    }
+  }
+  
+  return result;
 }
 
 /**

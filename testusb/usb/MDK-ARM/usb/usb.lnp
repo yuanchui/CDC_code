@@ -10,6 +10,9 @@
 "usb\stm32f1xx_hal_msp.o"
 "usb\cd74hc4067.o"
 "usb\pcap04.o"
+"usb\pcap04_reg.o"
+"usb\usb_common.o"
+"usb\usb_template.o"
 "usb\stm32f1xx_hal_gpio_ex.o"
 "usb\stm32f1xx_hal_pcd.o"
 "usb\stm32f1xx_hal_pcd_ex.o"
@@ -39,6 +42,6 @@
 "usb\usbd_ioreq.o"
 "usb\usbd_cdc.o"
 --strict --scatter "usb\usb.sct"
---summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "usb.map" -o usb\usb.axf

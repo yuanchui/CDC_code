@@ -67,6 +67,8 @@ void MUX_SelectMode(MUX_Mode_t mode, uint8_t x_channel, uint8_t y_channel);
 void MUX_SelectX(uint8_t channel);
 void MUX_SelectY(uint8_t channel);
 void MUX_SelectXY(uint8_t x_channel, uint8_t y_channel);
+void MUX_SetXChannel(uint8_t channel);  // Set X channel only (does not change enable state)
+void MUX_SetYChannel(uint8_t channel);  // Set Y channel only (does not change enable state)
 
 // Enable/Disable functions
 void MUX_EnableX(void);

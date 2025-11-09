@@ -9,6 +9,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usb_template.h"
+#include "usb_common.h"
 #include "usbd_cdc_if.h"
 #include <string.h>
 #include <stdio.h>
@@ -16,8 +17,6 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-
-#define TEMPLATE_BUFFER_SIZE  256
 
 /* Private macro -------------------------------------------------------------*/
 
@@ -35,9 +34,6 @@ Template_Config_t g_template_config = {
     .matrix_cols = 16
 };
 
-static char template_buffer[TEMPLATE_BUFFER_SIZE];
-static bool output_started = false;
-
 /* Private function prototypes -----------------------------------------------*/
 
 static void Template_FormatValue(uint32_t raw_data, double float_data, char *buffer, int buffer_size);
@@ -53,7 +49,6 @@ void Template_Init(void)
     strcpy(g_template_config.end_tag, TEMPLATE_DEFAULT_END_TAG);
     g_template_config.matrix_rows = 16;
     g_template_config.matrix_cols = 16;
-    output_started = false;
 }
 
 /**
@@ -145,7 +140,6 @@ void Template_SetMatrixSize(uint8_t rows, uint8_t cols)
 void Template_OutputStart(void)
 {
     USB_Printf("%s\r\n", g_template_config.start_tag);
-    output_started = true;
     
     if (g_template_config.show_header && g_template_config.format == TEMPLATE_FORMAT_TABLE) {
         Template_OutputHeader();
@@ -158,7 +152,6 @@ void Template_OutputStart(void)
 void Template_OutputEnd(void)
 {
     USB_Printf("%s\r\n", g_template_config.end_tag);
-    output_started = false;
 }
 
 /**

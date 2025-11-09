@@ -44,8 +44,6 @@ static MUX_Status_t mux_status = {
 };
 
 /* Private function prototypes -----------------------------------------------*/
-static void MUX_SetXChannel(uint8_t channel);
-static void MUX_SetYChannel(uint8_t channel);
 static void MUX_SetChannelBits(uint8_t channel, GPIO_TypeDef* s0_port, uint16_t s0_pin,
                                GPIO_TypeDef* s1_port, uint16_t s1_pin,
                                GPIO_TypeDef* s2_port, uint16_t s2_pin,
@@ -83,12 +81,14 @@ static void MUX_SetChannelBits(uint8_t channel, GPIO_TypeDef* s0_port, uint16_t 
     HAL_GPIO_WritePin(s3_port, s3_pin, (channel & 0x08) ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
+/* Public functions ----------------------------------------------------------*/
+
 /**
-  * @brief  Set X multiplexer channel
+  * @brief  Set X multiplexer channel (only sets channel, does not change enable state)
   * @param  channel: Channel number (0-15)
   * @retval None
   */
-static void MUX_SetXChannel(uint8_t channel)
+void MUX_SetXChannel(uint8_t channel)
 {
     MUX_SetChannelBits(channel, SX0_GPIO_Port, SX0_Pin,
                                SX1_GPIO_Port, SX1_Pin,
@@ -98,11 +98,11 @@ static void MUX_SetXChannel(uint8_t channel)
 }
 
 /**
-  * @brief  Set Y multiplexer channel
+  * @brief  Set Y multiplexer channel (only sets channel, does not change enable state)
   * @param  channel: Channel number (0-15)
   * @retval None
   */
-static void MUX_SetYChannel(uint8_t channel)
+void MUX_SetYChannel(uint8_t channel)
 {
     MUX_SetChannelBits(channel, SY0_GPIO_Port, SY0_Pin,
                                SY1_GPIO_Port, SY1_Pin,
@@ -110,8 +110,6 @@ static void MUX_SetYChannel(uint8_t channel)
                                SY3_GPIO_Port, SY3_Pin);
     mux_status.y_channel = channel & 0x0F;
 }
-
-/* Public functions ----------------------------------------------------------*/
 
 /**
   * @brief  Initialize CD74HC4067 multiplexer
@@ -175,7 +173,8 @@ void MUX_SelectMode(MUX_Mode_t mode, uint8_t x_channel, uint8_t y_channel)
     
     mux_status.mode = mode;
     
-    USB_Printf("MUX Mode: %d, X: %d, Y: %d\r\n", mode, x_channel, y_channel);
+    // Debug output removed - use USB commands to check status if needed
+    // USB_Printf("MUX Mode: %d, X: %d, Y: %d\r\n", mode, x_channel, y_channel);
 }
 
 /**

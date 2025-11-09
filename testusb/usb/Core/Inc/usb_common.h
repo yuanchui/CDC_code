@@ -110,6 +110,7 @@ USB_SystemStatus_t USB_GetStatus(void);
 void USB_PrintStatus(void);
 void USB_PrintHelp(void);
 void USB_PrintMatrixInfo(void);
+bool USB_CheckScanTrigger(void);  // Check if scan should be triggered (call from main loop)
 
 // Response formatting
 void USB_SendOK(const char *cmd);

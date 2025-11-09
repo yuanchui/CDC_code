@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "tim.h"
+#include "usb_common.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -33,10 +34,6 @@ void MX_TIM1_Init(void)
   /* USER CODE BEGIN TIM1_Init 0 */
 
   /* USER CODE END TIM1_Init 0 */
-
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_OC_InitTypeDef sConfigOC = {0};
-  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
 
   /* USER CODE BEGIN TIM1_Init 1 */
 
@@ -136,8 +133,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         g_usb_status.timer_counter >= g_usb_status.timer_threshold) {
       g_usb_status.timer_counter = 0;
       
-      // Trigger scan (will be handled in main loop or callback)
-      // This flag can be checked in main loop
+      // Set scan trigger flag (will be checked in main loop)
+      // Use extern to access the flag in usb_common.c
+      extern volatile bool scan_trigger_flag;
+      scan_trigger_flag = true;
     }
   }
 }

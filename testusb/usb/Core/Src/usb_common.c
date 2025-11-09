@@ -16,6 +16,7 @@
 #include "usbd_cdc_if.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -35,21 +36,25 @@ typedef struct {
 
 USB_SystemStatus_t g_usb_status = {
     .mode = USB_MODE_STOPPED,
-    .scan_rate_ms = 50,
+    .scan_rate_ms = 1000,  // Default: 1 second
     .current_row = 0,
     .current_col = 0,
     .matrix_rows = 16,
     .matrix_cols = 16,
     .is_running = false,
     .timer_counter = 0,
-    .timer_threshold = 10  // Default: 10 * 5ms = 50ms
+    .timer_threshold = 200  // Default: 200 * 5ms = 1000ms (1 second)
 };
 
 static CMD_QueueItem_t cmd_queue[USB_CMD_QUEUE_SIZE];
-static uint8_t cmd_queue_head = 0;
-static uint8_t cmd_queue_tail = 0;
+// Reserved for future FIFO queue implementation
+// static uint8_t cmd_queue_head = 0;
+// static uint8_t cmd_queue_tail = 0;
 static bool cmd_queue_active = false;
 static char cmd_buffer[USB_CMD_MAX_LEN];
+
+// Scan trigger flag (set by timer interrupt, checked by main loop)
+volatile bool scan_trigger_flag = false;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -59,6 +64,9 @@ static CMD_Result_t CMD_ExecuteSingle(const char *cmd, char params[][CMD_TOKEN_M
 static uint32_t CMD_ParseUint32(const char *str);
 static uint8_t CMD_ParseUint8(const char *str);
 static bool CMD_ParseBool(const char *str);
+static void USB_OutputScanData(uint8_t row, uint8_t col, 
+                                uint32_t raw_data_ca, double float_data_ca,
+                                uint32_t raw_data_cb, double float_data_cb);
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -69,14 +77,14 @@ void USB_Common_Init(void)
 {
     memset(&g_usb_status, 0, sizeof(g_usb_status));
     g_usb_status.mode = USB_MODE_STOPPED;
-    g_usb_status.scan_rate_ms = 50;
+    g_usb_status.scan_rate_ms = 1000;  // Default: 1 second
     g_usb_status.matrix_rows = 16;
     g_usb_status.matrix_cols = 16;
-    g_usb_status.timer_threshold = 10;  // 10 * 5ms = 50ms
+    g_usb_status.timer_threshold = 200;  // 200 * 5ms = 1000ms (1 second)
     
     memset(cmd_queue, 0, sizeof(cmd_queue));
-    cmd_queue_head = 0;
-    cmd_queue_tail = 0;
+    // cmd_queue_head = 0;  // Reserved for future FIFO queue implementation
+    // cmd_queue_tail = 0;  // Reserved for future FIFO queue implementation
     cmd_queue_active = false;
 }
 
@@ -144,7 +152,6 @@ static void CMD_SplitCommand(const char *cmd, char tokens[][CMD_TOKEN_MAX], int 
 {
     *token_count = 0;
     const char *p = cmd;
-    int idx = 0;
     
     while (*p != '\0' && *token_count < CMD_PARAM_MAX) {
         // Skip whitespace
@@ -555,6 +562,13 @@ void USB_Start(void)
     if (g_usb_status.mode == USB_MODE_STOPPED) {
         g_usb_status.mode = USB_MODE_NORMAL;
     }
+    // Start timer for periodic scanning
+    extern TIM_HandleTypeDef htim1;
+    extern void TIM1_Start(void);
+    TIM1_Start();
+    
+    // Trigger immediate first scan (don't wait for timer)
+    scan_trigger_flag = true;
 }
 
 /**
@@ -564,15 +578,81 @@ void USB_Stop(void)
 {
     g_usb_status.is_running = false;
     g_usb_status.mode = USB_MODE_STOPPED;
+    // Stop timer
+    extern void TIM1_Stop(void);
+    TIM1_Stop();
 }
 
 /**
-  * @brief  Execute single scan
+  * @brief  Execute single scan at current position
   */
 void USB_SingleScan(void)
 {
-    // This will be called from timer interrupt or main loop
-    // Implementation depends on integration with template and pcap04
+    // Scan current position
+    uint8_t row = g_usb_status.current_row;
+    uint8_t col = g_usb_status.current_col;
+    
+    // Select multiplexer channels
+    MUX_SelectXY(col, row);
+    HAL_Delay(10);  // Settling time
+    
+    // Start PCAP04 CDC measurement
+    extern void PCap04_CDCStart(void);
+    PCap04_CDCStart();
+    HAL_Delay(20);  // Wait for measurement to complete
+    
+    // Read PCAP04 data
+    // PC0, PC1: Reference capacitance (CA)
+    // PC2, PC3: Measurement capacitance (CB)
+    extern uint32_t PCAP04_Read_CDC_Result_data(int Nun);
+    extern double integrated_data(uint32_t data);
+    
+    uint32_t raw_data_pc0 = PCAP04_Read_CDC_Result_data(0);
+    uint32_t raw_data_pc1 = PCAP04_Read_CDC_Result_data(1);
+    uint32_t raw_data_pc2 = PCAP04_Read_CDC_Result_data(2);
+    uint32_t raw_data_pc3 = PCAP04_Read_CDC_Result_data(3);
+    
+    double float_data_pc0 = integrated_data(raw_data_pc0);
+    double float_data_pc1 = integrated_data(raw_data_pc1);
+    double float_data_pc2 = integrated_data(raw_data_pc2);
+    double float_data_pc3 = integrated_data(raw_data_pc3);
+    
+    // Calculate CA (reference) - average of PC0 and PC1
+    uint32_t raw_data_ca = (raw_data_pc0 + raw_data_pc1) / 2;
+    double float_data_ca = (float_data_pc0 + float_data_pc1) / 2.0;
+    
+    // Calculate CB (measurement) - average of PC2 and PC3
+    uint32_t raw_data_cb = (raw_data_pc2 + raw_data_pc3) / 2;
+    double float_data_cb = (float_data_pc2 + float_data_pc3) / 2.0;
+    
+    // Output using new CA/CB format
+    USB_OutputScanData(row, col, raw_data_ca, float_data_ca, raw_data_cb, float_data_cb);
+    
+    // Move to next position
+    col++;
+    if (col >= g_usb_status.matrix_cols) {
+        col = 0;
+        row++;
+        if (row >= g_usb_status.matrix_rows) {
+            row = 0;
+            // Matrix scan complete, restart from beginning
+        }
+    }
+    g_usb_status.current_row = row;
+    g_usb_status.current_col = col;
+}
+
+/**
+  * @brief  Check if scan should be triggered (called from main loop)
+  * @retval true if scan should be executed
+  */
+bool USB_CheckScanTrigger(void)
+{
+    if (scan_trigger_flag) {
+        scan_trigger_flag = false;
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -612,6 +692,65 @@ uint8_t USB_GetCol(void)
 }
 
 /**
+  * @brief  Format and output scan data with CA/CB format
+  */
+static void USB_OutputScanData(uint8_t row, uint8_t col, 
+                                uint32_t raw_data_ca, double float_data_ca,
+                                uint32_t raw_data_cb, double float_data_cb)
+{
+    extern Template_Config_t g_template_config;
+    char ca_value_str[32];
+    char cb_value_str[32];
+    char value_str[32];
+    
+    // Format CA value
+    if (g_template_config.mode == TEMPLATE_MODE_RAW) {
+        if (g_template_config.use_hex) {
+            snprintf(ca_value_str, sizeof(ca_value_str), "0x%08X", raw_data_ca);
+        } else {
+            snprintf(ca_value_str, sizeof(ca_value_str), "%lu", (unsigned long)raw_data_ca);
+        }
+    } else {  // QUANT mode
+        char format_str[16];
+        snprintf(format_str, sizeof(format_str), "%%.%df", g_template_config.precision);
+        snprintf(ca_value_str, sizeof(ca_value_str), format_str, float_data_ca);
+    }
+    
+    // Format CB value
+    if (g_template_config.mode == TEMPLATE_MODE_RAW) {
+        if (g_template_config.use_hex) {
+            snprintf(cb_value_str, sizeof(cb_value_str), "0x%08X", raw_data_cb);
+        } else {
+            snprintf(cb_value_str, sizeof(cb_value_str), "%lu", (unsigned long)raw_data_cb);
+        }
+    } else {  // QUANT mode
+        char format_str[16];
+        snprintf(format_str, sizeof(format_str), "%%.%df", g_template_config.precision);
+        snprintf(cb_value_str, sizeof(cb_value_str), format_str, float_data_cb);
+    }
+    
+    // Format measurement value (use CB)
+    if (g_template_config.mode == TEMPLATE_MODE_RAW) {
+        if (g_template_config.use_hex) {
+            snprintf(value_str, sizeof(value_str), "0x%08X", raw_data_cb);
+        } else {
+            snprintf(value_str, sizeof(value_str), "%lu", (unsigned long)raw_data_cb);
+        }
+    } else {  // QUANT mode
+        char format_str[16];
+        snprintf(format_str, sizeof(format_str), "%%.%df", g_template_config.precision);
+        snprintf(value_str, sizeof(value_str), format_str, float_data_cb);
+    }
+    
+    // Get mode string
+    const char *mode_str = (g_template_config.mode == TEMPLATE_MODE_RAW) ? "raw" : "quant";
+    
+    // Output: CA:value,CB:value MODE:X,X:col,Y:row,value\r\n
+    USB_Printf("CA:%s,CB:%s MODE:%s,X:%d,Y:%d,%s\r\n", 
+               ca_value_str, cb_value_str, mode_str, col, row, value_str);
+}
+
+/**
   * @brief  Scan specific point
   */
 void USB_ScanPoint(uint8_t row, uint8_t col)
@@ -623,8 +762,37 @@ void USB_ScanPoint(uint8_t row, uint8_t col)
     // Wait for settling
     HAL_Delay(10);
     
+    // Start PCAP04 CDC measurement
+    extern void PCap04_CDCStart(void);
+    PCap04_CDCStart();
+    HAL_Delay(20);  // Wait for measurement to complete
+    
     // Read PCAP04 data
-    // This will be integrated with template output
+    // PC0, PC1: Reference capacitance (CA)
+    // PC2, PC3: Measurement capacitance (CB)
+    extern uint32_t PCAP04_Read_CDC_Result_data(int Nun);
+    extern double integrated_data(uint32_t data);
+    
+    uint32_t raw_data_pc0 = PCAP04_Read_CDC_Result_data(0);
+    uint32_t raw_data_pc1 = PCAP04_Read_CDC_Result_data(1);
+    uint32_t raw_data_pc2 = PCAP04_Read_CDC_Result_data(2);
+    uint32_t raw_data_pc3 = PCAP04_Read_CDC_Result_data(3);
+    
+    double float_data_pc0 = integrated_data(raw_data_pc0);
+    double float_data_pc1 = integrated_data(raw_data_pc1);
+    double float_data_pc2 = integrated_data(raw_data_pc2);
+    double float_data_pc3 = integrated_data(raw_data_pc3);
+    
+    // Calculate CA (reference) - average of PC0 and PC1
+    uint32_t raw_data_ca = (raw_data_pc0 + raw_data_pc1) / 2;
+    double float_data_ca = (float_data_pc0 + float_data_pc1) / 2.0;
+    
+    // Calculate CB (measurement) - average of PC2 and PC3
+    uint32_t raw_data_cb = (raw_data_pc2 + raw_data_pc3) / 2;
+    double float_data_cb = (float_data_pc2 + float_data_pc3) / 2.0;
+    
+    // Output using new format
+    USB_OutputScanData(row, col, raw_data_ca, float_data_ca, raw_data_cb, float_data_cb);
 }
 
 /**
@@ -653,17 +821,22 @@ void USB_PrintStatus(void)
   */
 void USB_PrintHelp(void)
 {
-    USB_Printf("=== USB Command Help ===\r\n");
-    USB_Printf("General: START, STOP, STATUS, HELP, ?\r\n");
-    USB_Printf("Scan: SET_RATE:<ms>, FAST_MODE, NORMAL_MODE, SINGLE_SCAN\r\n");
-    USB_Printf("Matrix: SET_ROW:<n>, SET_COL:<n>, GET_ROW, GET_COL, SCAN_POINT:<r>:<c>, MATRIX_INFO\r\n");
-    USB_Printf("PCAP04: PCAP04_STATUS, PCAP04_TEST, PCAP04_READ:<reg>, PCAP04_WRITE:<reg>:<val>\r\n");
-    USB_Printf("PCAP04: PCAP04_DUMP, PCAP04_LOAD_DEFAULT, SET_CDIFF:<0/1>, SET_INTREF:<0/1>, SET_EXTREF:<0/1>\r\n");
-    USB_Printf("Template: SET_MODE:<raw/quant>, SET_FORMAT:<table/simple>, SET_TABLE_DELIM:<char>\r\n");
-    USB_Printf("Template: SET_HEX:<0/1>, SET_PRECISION:<n>, SET_HEADER:<0/1>, SET_MATRIX_SIZE:<r>:<c>\r\n");
-    USB_Printf("Queue: QUEUE_START, QUEUE_END, WAIT:<ms>\r\n");
-    USB_Printf("Combined: Use && to chain commands\r\n");
-    USB_Printf("========================\r\n");
+    // Send all help text using USB_SendLongString to ensure complete transmission
+    const char *help_text = 
+        "=== USB Command Help ===\r\n"
+        "General: START, STOP, STATUS, HELP, ?\r\n"
+        "Scan: SET_RATE:<ms>, FAST_MODE, NORMAL_MODE, SINGLE_SCAN\r\n"
+        "Matrix: SET_ROW:<n>, SET_COL:<n>, GET_ROW, GET_COL, SCAN_POINT:<r>:<c>, MATRIX_INFO\r\n"
+        "PCAP04: PCAP04_STATUS, PCAP04_TEST, PCAP04_READ:<reg>, PCAP04_WRITE:<reg>:<val>\r\n"
+        "PCAP04: PCAP04_DUMP, PCAP04_LOAD_DEFAULT, SET_CDIFF:<0/1>, SET_INTREF:<0/1>, SET_EXTREF:<0/1>\r\n"
+        "Template: SET_MODE:<raw/quant>, SET_FORMAT:<table/simple>, SET_TABLE_DELIM:<char>\r\n"
+        "Template: SET_HEX:<0/1>, SET_PRECISION:<n>, SET_HEADER:<0/1>, SET_MATRIX_SIZE:<r>:<c>\r\n"
+        "Queue: QUEUE_START, QUEUE_END, WAIT:<ms>\r\n"
+        "Combined: Use && to chain commands\r\n"
+        "========================\r\n";
+    
+    // Use USB_SendLongString to ensure all data is sent properly
+    USB_SendLongString(help_text);
 }
 
 /**
@@ -708,8 +881,8 @@ void USB_SendStatus(void)
 void USB_QueueStart(void)
 {
     cmd_queue_active = true;
-    cmd_queue_head = 0;
-    cmd_queue_tail = 0;
+    // cmd_queue_head = 0;  // Reserved for future FIFO queue implementation
+    // cmd_queue_tail = 0;  // Reserved for future FIFO queue implementation
     memset(cmd_queue, 0, sizeof(cmd_queue));
 }
 
