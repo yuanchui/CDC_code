@@ -36,7 +36,14 @@
 "usb\usbd_ctlreq.o"
 "usb\usbd_ioreq.o"
 "usb\usbd_cdc.o"
+"usb\cmd_queue.o"
+"usb\mux_cd4067.o"
+"usb\pcap04_assets.o"
+"usb\pcap04_if.o"
+"usb\pcap04_register.o"
+"usb\pcap04_register_def.o"
+"usb\usb_cmd.o"
 --strict --scatter "usb\usb.sct"
---summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "usb.map" -o usb\usb.axf

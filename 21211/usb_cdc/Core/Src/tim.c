@@ -26,6 +26,7 @@
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim2;
 
 /* TIM1 init function */
 void MX_TIM1_Init(void)
@@ -100,6 +101,58 @@ void MX_TIM1_Init(void)
 
 }
 
+/* TIM2 init function */
+void MX_TIM2_Init(void)
+{
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 7200 - 1U;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 10 - 1U;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* USER CODE BEGIN TIM2_Init 2 */
+  if (HAL_TIM_Base_Start_IT(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE END TIM2_Init 2 */
+}
+
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
+{
+  if (tim_baseHandle->Instance == TIM2)
+  {
+    /* USER CODE BEGIN TIM2_MspInit 0 */
+
+    /* USER CODE END TIM2_MspInit 0 */
+    __HAL_RCC_TIM2_CLK_ENABLE();
+    HAL_NVIC_SetPriority(TIM2_IRQn, 1, 0);
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
+    /* USER CODE BEGIN TIM2_MspInit 1 */
+
+    /* USER CODE END TIM2_MspInit 1 */
+  }
+}
+
 void HAL_TIM_OC_MspInit(TIM_HandleTypeDef* tim_ocHandle)
 {
 
@@ -132,12 +185,31 @@ void HAL_TIM_OC_MspDeInit(TIM_HandleTypeDef* tim_ocHandle)
   }
 }
 
+void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
+{
+  if (tim_baseHandle->Instance == TIM2)
+  {
+    /* USER CODE BEGIN TIM2_MspDeInit 0 */
+
+    /* USER CODE END TIM2_MspDeInit 0 */
+    __HAL_RCC_TIM2_CLK_DISABLE();
+    HAL_NVIC_DisableIRQ(TIM2_IRQn);
+    /* USER CODE BEGIN TIM2_MspDeInit 1 */
+
+    /* USER CODE END TIM2_MspDeInit 1 */
+  }
+}
+
 /* USER CODE BEGIN 1 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == TIM1)
   {
     usb_cmd_tick_5ms();
+  }
+  else if (htim->Instance == TIM2)
+  {
+    usb_cmd_worker_isr();
   }
 }
 

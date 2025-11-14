@@ -5,16 +5,6 @@
 #include "pcap04_register.h"
 #include "mux_cd4067.h"
 
-/*
- * 模块说明：
- * 该文件负责 USB CDC 指令链路的解析与调度，核心目标是保证所有 USB 收发、
- * 指令处理、SPI 外设访问都在中断或定时器回调内以非阻塞方式完成。
- * - usb_cmd_rx_push() 在 USB 中断中被调用，将数据写入软件双缓冲。
- * - usb_cmd_tick_5ms() 由 TIM1 5 ms 定时回调触发，完成解析、执行和回包。
- * - 指令支持优先级与 “&&” 组合，队列内会维持顺序和优先级。
- * - 针对 PCAP04 寄存器操作，结合 pcap04_register_def.c 生成详细回包说明。
- */
-
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -24,25 +14,39 @@
 #define RX_BUFFER_COUNT      2U
 #define RESP_QUEUE_CAP       6U
 #define RESP_MSG_MAX_LEN     160U
+#define USB_CMD_PENDING_MAX  8U
 
-/* RX double buffer and flags */
+/* RX 双缓冲区与状态 */
 static uint8_t rx_buf[RX_BUFFER_COUNT][64];
 static volatile uint16_t rx_len[RX_BUFFER_COUNT] = {0U, 0U};
 static volatile uint8_t rx_write_idx = 0U;
 static volatile uint8_t rx_read_idx = 1U;
 static volatile uint8_t rx_pending = 0U;
 
-/* CDC pause flag with simple depth counter */
+/* CDC 发送暂停控制（支持嵌套暂停） */
 static volatile uint8_t cdc_paused = 0U;
 static volatile uint8_t cdc_pause_depth = 0U;
 
-/* Response queue */
+/* USB 回复消息队列 */
 static char resp_msgs[RESP_QUEUE_CAP][RESP_MSG_MAX_LEN];
 static uint8_t resp_head = 0U;
 static uint8_t resp_tail = 0U;
 static uint8_t resp_count = 0U;
 
-/* Helpers ------------------------------------------------------------------ */
+/* 三个触发源的待处理标志 */
+static volatile uint8_t s_worker_pending = 0U;
+static volatile uint8_t s_timer_slot_pending = 0U;
+static volatile uint8_t s_usb_trigger_pending = 0U;
+
+/* 前置声明 ------------------------------------------------------------------ */
+static void usb_cmd_schedule_worker(void);
+static void usb_cmd_process_core(uint8_t periodic_tick);
+static void handle_single_command(const char* cmd);
+static void handle_reg_command(const char* args);
+static void handle_pcap_command(const char* args);
+static void handle_scan_command(const char* args);
+
+/* 工具函数 ------------------------------------------------------------------ */
 static inline const char* skip_spaces(const char* s)
 {
 	while (s != NULL && *s != '\0' && (*s == ' ' || *s == '\t' || *s == '\r' || *s == '\n'))
@@ -54,7 +58,10 @@ static inline const char* skip_spaces(const char* s)
 
 static void rtrim(char* s)
 {
-	if (s == NULL) return;
+	if (s == NULL)
+	{
+		return;
+	}
 	int len = (int)strlen(s);
 	while (len > 0)
 	{
@@ -73,7 +80,10 @@ static void rtrim(char* s)
 
 static void ltrim(char* s)
 {
-	if (s == NULL) return;
+	if (s == NULL)
+	{
+		return;
+	}
 	size_t len = strlen(s);
 	size_t idx = 0U;
 	while (idx < len && (s[idx] == ' ' || s[idx] == '\t' || s[idx] == '\r' || s[idx] == '\n'))
@@ -99,7 +109,6 @@ static cmd_priority_t extract_priority(char* text)
 	{
 		char tag = (char)toupper((unsigned char)text[1]);
 		size_t len = strlen(text);
-		/* Remove prefix */
 		memmove(text, text + 3, len - 2);
 		trim(text);
 		if (tag == 'H')
@@ -108,6 +117,11 @@ static cmd_priority_t extract_priority(char* text)
 		}
 	}
 	return CMD_PRIO_LOW;
+}
+
+static void usb_cmd_schedule_worker(void)
+{
+	s_worker_pending = 1U;
 }
 
 static uint8_t queue_response_fmt(const char* status, const char* tag, const char* fmt, ...)
@@ -140,7 +154,6 @@ static uint8_t queue_response_fmt(const char* status, const char* tag, const cha
 		slot[offset] = '\0';
 	}
 
-	/* Ensure message ends with CRLF */
 	size_t len = strlen(slot);
 	if (len + 2U < RESP_MSG_MAX_LEN)
 	{
@@ -151,6 +164,7 @@ static uint8_t queue_response_fmt(const char* status, const char* tag, const cha
 
 	resp_tail = (uint8_t)((resp_tail + 1U) % RESP_QUEUE_CAP);
 	resp_count++;
+	usb_cmd_schedule_worker();
 	return 1U;
 }
 
@@ -367,11 +381,7 @@ static void parse_and_enqueue(const uint8_t* data, uint16_t len)
 	}
 }
 
-/* Command handlers --------------------------------------------------------- */
-static void handle_reg_command(const char* args);
-static void handle_pcap_command(const char* args);
-static void handle_scan_command(const char* args);
-
+/* 指令处理 ------------------------------------------------------------------ */
 static void handle_single_command(const char* cmd)
 {
 	if (cmd == NULL)
@@ -500,16 +510,16 @@ static void handle_reg_command(const char* args)
 		uint8_t rc = pcap04_if_reg_set((uint8_t)addr, bitname, (uint8_t)val, &old_val, &new_val);
 		if (rc == 0U)
 		{
-		queue_ok("REG", "SET 0x%02X.%s: %u->%u", (unsigned)addr, bitname, (unsigned)old_val, (unsigned)new_val);
-		const PCAP04_Register_t* def = get_register_def((uint8_t)addr);
-		if (def != NULL)
-		{
-			const PCAP04_RegBit_t* bit_def = find_bit_def(def, bitname);
-			if (bit_def != NULL)
+			queue_ok("REG", "SET 0x%02X.%s: %u->%u", (unsigned)addr, bitname, (unsigned)old_val, (unsigned)new_val);
+			const PCAP04_Register_t* def = get_register_def((uint8_t)addr);
+			if (def != NULL)
 			{
-				queue_reg_bit_detail((uint8_t)addr, bit_def, new_val);
+				const PCAP04_RegBit_t* bit_def = find_bit_def(def, bitname);
+				if (bit_def != NULL)
+				{
+					queue_reg_bit_detail((uint8_t)addr, bit_def, new_val);
+				}
 			}
-		}
 		}
 		else
 		{
@@ -539,16 +549,16 @@ static void handle_reg_command(const char* args)
 		uint8_t rc = pcap04_if_reg_get((uint8_t)addr, bitname, &value);
 		if (rc == 0U)
 		{
-		queue_ok("REG", "GET 0x%02X.%s=0x%02X", (unsigned)addr, bitname, value);
-		const PCAP04_Register_t* def = get_register_def((uint8_t)addr);
-		if (def != NULL)
-		{
-			const PCAP04_RegBit_t* bit_def = find_bit_def(def, bitname);
-			if (bit_def != NULL)
+			queue_ok("REG", "GET 0x%02X.%s=0x%02X", (unsigned)addr, bitname, value);
+			const PCAP04_Register_t* def = get_register_def((uint8_t)addr);
+			if (def != NULL)
 			{
-				queue_reg_bit_detail((uint8_t)addr, bit_def, value);
+				const PCAP04_RegBit_t* bit_def = find_bit_def(def, bitname);
+				if (bit_def != NULL)
+				{
+					queue_reg_bit_detail((uint8_t)addr, bit_def, value);
+				}
 			}
-		}
 		}
 		else
 		{
@@ -565,9 +575,8 @@ static void handle_reg_command(const char* args)
 			queue_err("REG", "invalid address '%s'", addr_tok);
 			return;
 		}
-		uint8_t reg_val = pcap04_if_reg_byte((uint8_t)addr);
-	(void)reg_val;
-	queue_reg_summary((uint8_t)addr);
+		(void)pcap04_if_reg_byte((uint8_t)addr);
+		queue_reg_summary((uint8_t)addr);
 	}
 	else if (strcmp(action, "SNAPSHOT") == 0 || strcmp(action, "DUMP") == 0)
 	{
@@ -692,35 +701,9 @@ static void handle_scan_command(const char* args)
 	}
 }
 
-/* Public API ----------------------------------------------------------------*/
-void usb_cmd_init(void)
+/* 核心处理逻辑 -------------------------------------------------------------- */
+static void usb_cmd_process_core(uint8_t periodic_tick)
 {
-	/* 初始化指令队列、PCAP04 接口、CD4067 扫描器 */
-	cmd_queue_init();
-	pcap04_if_init();
-	mux_init();
-	queue_response_fmt("INFO", "SYS", "command subsystem ready");
-}
-
-void usb_cmd_rx_push(const uint8_t* data, uint16_t length)
-{
-	/* USB 中断接收入口：仅复制数据并更新标志，避免重负载操作 */
-	if (length == 0U || data == NULL) return;
-	uint16_t copy_len = (length > sizeof(rx_buf[0])) ? (uint16_t)sizeof(rx_buf[0]) : length;
-	if (rx_pending >= RX_BUFFER_COUNT)
-	{
-		rx_read_idx ^= 1U;
-		rx_pending--;
-	}
-	memcpy(rx_buf[rx_write_idx], data, copy_len);
-	rx_len[rx_write_idx] = copy_len;
-	rx_write_idx ^= 1U;
-	rx_pending++;
-}
-
-void usb_cmd_tick_5ms(void)
-{
-	/* 5 ms 周期调度：解析指令、执行命令、轮询外设、发送排队回复 */
 	if (rx_pending > 0U)
 	{
 		uint8_t idx = rx_read_idx;
@@ -742,10 +725,12 @@ void usb_cmd_tick_5ms(void)
 		handle_single_command(cmd_copy);
 	}
 
-	pcap04_if_tick_5ms();
-	mux_tick_5ms();
+	if (periodic_tick)
+	{
+		pcap04_if_tick_5ms();
+		mux_tick_5ms();
+	}
 
-	/* Drain PCAP04 events */
 	pcap04_event_t evt;
 	while (pcap04_if_fetch_event(&evt))
 	{
@@ -772,16 +757,102 @@ void usb_cmd_tick_5ms(void)
 	pump_tx();
 }
 
+/* 对外接口 ------------------------------------------------------------------ */
+void usb_cmd_init(void)
+{
+	cmd_queue_init();
+	pcap04_if_init();
+	mux_init();
+
+	s_worker_pending = 0U;
+	s_timer_slot_pending = 0U;
+	s_usb_trigger_pending = 0U;
+
+	queue_response_fmt("INFO", "SYS", "command subsystem ready");
+}
+
+void usb_cmd_rx_push(const uint8_t* data, uint16_t length)
+{
+	if (length == 0U || data == NULL)
+	{
+		return;
+	}
+
+	uint16_t copy_len = (length > sizeof(rx_buf[0])) ? (uint16_t)sizeof(rx_buf[0]) : length;
+	if (rx_pending >= RX_BUFFER_COUNT)
+	{
+		rx_read_idx ^= 1U;
+		rx_pending--;
+	}
+	memcpy(rx_buf[rx_write_idx], data, copy_len);
+	rx_len[rx_write_idx] = copy_len;
+	rx_write_idx ^= 1U;
+	rx_pending++;
+
+	if (s_usb_trigger_pending < USB_CMD_PENDING_MAX)
+	{
+		s_usb_trigger_pending++;
+	}
+	usb_cmd_schedule_worker();
+}
+
+void usb_cmd_tick_5ms(void)
+{
+	if (s_timer_slot_pending < USB_CMD_PENDING_MAX)
+	{
+		s_timer_slot_pending++;
+	}
+	usb_cmd_schedule_worker();
+}
+
+void usb_cmd_worker_isr(void)
+{
+	if (s_worker_pending == 0U)
+	{
+		return;
+	}
+
+	s_worker_pending = 0U;
+	uint8_t work_ran = 0U;
+
+	if (s_usb_trigger_pending > 0U)
+	{
+		s_usb_trigger_pending--;
+		usb_cmd_process_core(0U);
+		work_ran = 1U;
+	}
+
+	if (s_timer_slot_pending > 0U)
+	{
+		s_timer_slot_pending--;
+		usb_cmd_process_core(1U);
+		work_ran = 1U;
+	}
+
+	if (!work_ran)
+	{
+		if (rx_pending > 0U || cmd_queue_count() > 0U || resp_count > 0U)
+		{
+			usb_cmd_process_core(0U);
+			work_ran = 1U;
+		}
+	}
+
+	if (s_usb_trigger_pending > 0U || s_timer_slot_pending > 0U ||
+	    rx_pending > 0U || cmd_queue_count() > 0U || resp_count > 0U)
+	{
+		s_worker_pending = 1U;
+	}
+}
+
 void usb_cmd_pause_cdc(void)
 {
-	/* 累计暂停计数，确保关键操作期间停止 CDC 发送 */
 	cdc_pause_depth++;
 	cdc_paused = 1U;
 }
 
 void usb_cmd_resume_cdc(void)
 {
-	/* 恢复 CDC 发送，当暂停计数回落到 0 时才真正放开 */
 	if (cdc_pause_depth > 0U)
 	{
 		cdc_pause_depth--;
@@ -796,131 +867,3 @@ uint8_t usb_cmd_is_cdc_paused(void)
 {
 	return cdc_paused;
 }
-
-#include "usb_cmd.h"
-#include "cmd_queue.h"
-#include "usbd_cdc_if.h"
-#include "string.h"
-#include "pcap04_if.h"
-#include "mux_cd4067.h"
-
-/* RX double buffer and flags */
-static uint8_t rx_buf[2][64];
-static volatile uint16_t rx_len[2] = {0U, 0U};
-static volatile uint8_t rx_write_idx = 0U;
-static volatile uint8_t rx_read_idx = 1U;
-static volatile uint8_t rx_pending = 0U;
-
-/* CDC pause flag */
-static volatile uint8_t cdc_paused = 0U;
-
-static void parse_and_enqueue(const uint8_t* data, uint16_t len)
-{
-	/* Very simple parser: split by '&&', assign priority by prefix like "[H]" or "[L]". */
-	uint16_t i = 0U;
-	while (i < len)
-	{
-		/* Find segment end */
-		uint16_t start = i;
-		while (i < len)
-		{
-			if ((i + 1U < len) && data[i] == '&' && data[i + 1U] == '&')
-			{
-				break;
-			}
-			i++;
-		}
-		uint16_t seg_len = (uint16_t)(i - start);
-		/* Determine priority */
-		cmd_priority_t prio = CMD_PRIO_LOW;
-		if (seg_len >= 3U && data[start] == '[' && data[start + 2U] == ']')
-		{
-			if (data[start + 1U] == 'H') prio = CMD_PRIO_HIGH;
-			if (data[start + 1U] == 'L') prio = CMD_PRIO_LOW;
-		}
-		/* Enqueue pointer to segment (no copy to keep ISR light); consumer executes quickly */
-		(void)cmd_queue_push(&data[start], seg_len, prio);
-		/* Skip '&&' */
-		if ((i + 1U < len) && data[i] == '&' && data[i + 1U] == '&')
-		{
-			i += 2U;
-		}
-	}
-}
-
-void usb_cmd_rx_push(const uint8_t* data, uint16_t length)
-{
-	if (length == 0U) return;
-	/* Only accept up to 64B FS packet per RX slot */
-	uint16_t copy_len = (length > sizeof(rx_buf[0])) ? (uint16_t)sizeof(rx_buf[0]) : length;
-	if (rx_pending >= 2U)
-	{
-		/* Both buffers busy: drop oldest by advancing read index to keep latest */
-		rx_read_idx ^= 1U;
-		rx_pending--;
-	}
-	memcpy(rx_buf[rx_write_idx], data, copy_len);
-	rx_len[rx_write_idx] = copy_len;
-	rx_write_idx ^= 1U;
-	rx_pending++;
-}
-
-void usb_cmd_tick_5ms(void)
-{
-	/* Move any RX'd segments into the command queue with priority and sequencing */
-	if (rx_pending > 0U)
-	{
-		uint8_t idx = rx_read_idx;
-		parse_and_enqueue(rx_buf[idx], rx_len[idx]);
-		rx_len[idx] = 0U;
-		rx_read_idx ^= 1U;
-		rx_pending--;
-	}
-
-	/* Process at most one queued command per tick to bound latency */
-	cmd_item_t item;
-	if (cmd_queue_pop(&item))
-	{
-		/* Dispatch command. Minimal examples: control CDC pause, PCAP04 test, CRLF, etc. */
-		if (item.length >= 4 && (memcmp(item.data, "PAUS", 4) == 0))
-		{
-			usb_cmd_pause_cdc();
-		}
-		else if (item.length >= 4 && (memcmp(item.data, "RESU", 4) == 0))
-		{
-			usb_cmd_resume_cdc();
-		}
-		else if (item.length >= 4 && (memcmp(item.data, "TEST", 4) == 0))
-		{
-			(void)PCap04_Test();
-		}
-		/* Echo by default to prove non-blocking path */
-		if (!cdc_paused)
-		{
-			/* Try to transmit; if busy, retry next tick */
-			if (CDC_TxBusy_FS() == USBD_OK)
-			{
-				(void)CDC_FS_Send(item.data, item.length);
-			}
-		}
-	}
-	/* Advance CD4067 scanning asynchronously */
-	mux_tick_5ms();
-}
-
-void usb_cmd_pause_cdc(void)
-{
-	cdc_paused = 1U;
-}
-
-void usb_cmd_resume_cdc(void)
-{
-	cdc_paused = 0U;
-}
-
-uint8_t usb_cmd_is_cdc_paused(void)
-{
-	return cdc_paused;
-}
-
-
