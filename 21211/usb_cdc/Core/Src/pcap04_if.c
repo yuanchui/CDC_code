@@ -5,7 +5,7 @@
 #include "usbd_cdc_if.h"
 #include "string.h"
 #include "main.h"
-
+\
 #define PCAP04_FLASH_ADDR        0x08080000UL
 #define PCAP04_OPCODE_WRITE_REG  0xA0U
 #define PCAP04_REG_QUEUE_CAP     64U
