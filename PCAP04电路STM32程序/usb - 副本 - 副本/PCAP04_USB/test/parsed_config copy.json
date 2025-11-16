@@ -1,0 +1,2126 @@
+{
+  "Reg0": {
+    "register_number": 0,
+    "hex_address": "0x1D",
+    "current_value": "0x000",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "I2C_A",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "I²C设备地址补码配置",
+        "options": [
+          {
+            "value": "0",
+            "description": "3: I²C地址补码（用于设置I²C从机地址）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "OLF_FTUNE",
+        "bits": "[5:2]",
+        "bit_high": 5,
+        "bit_low": 2,
+        "description": "低频时钟微调",
+        "options": [
+          {
+            "value": "0",
+            "description": "最小值",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "description": "典型值（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "15",
+            "description": "最大值",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "OLF_CTUNE",
+        "bits": "[1:0]",
+        "bit_high": 1,
+        "bit_low": 0,
+        "description": "低频时钟粗调",
+        "options": []
+      }
+    ],
+    "options": {}
+  },
+  "Reg1": {
+    "register_number": 1,
+    "hex_address": "0x00",
+    "current_value": null,
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "OX_DIS",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "禁用OX时钟",
+        "options": [
+          {
+            "value": "0",
+            "description": "启用（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "description": "禁用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "OX_DIV4",
+        "bits": "[5]",
+        "bit_high": 5,
+        "bit_low": 5,
+        "description": "OX时钟4分频",
+        "options": [
+          {
+            "value": "0",
+            "description": "不分频，f_ox = 2MHz",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "4分频，f_ox = 0.5MHz",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "OX_AUTOSTOP_DIS",
+        "bits": "[4]",
+        "bit_high": 4,
+        "bit_low": 4,
+        "description": "ams内部位（默认: 0）",
+        "options": []
+      },
+      {
+        "name": "OX_STOP",
+        "bits": "[3]",
+        "bit_high": 3,
+        "bit_low": 3,
+        "description": "ams内部位（默认: 0）",
+        "options": []
+      },
+      {
+        "name": "OX_RUN",
+        "bits": "[2:0]",
+        "bit_high": 2,
+        "bit_low": 0,
+        "description": "控制OX发生器的持续性或延迟",
+        "options": [
+          {
+            "value": "0",
+            "description": "发生器关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "OX永久运行",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "OX延迟 = 31 / fOLF",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "OX延迟 = 2 / fOLF",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "description": "OX延迟 = 1 / fOLF",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg2": {
+    "register_number": 2,
+    "hex_address": "0x58",
+    "current_value": null,
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "RDCHG_INT_SEL1",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "PC4~PC5的片上放电电阻选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "180 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "90 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "30 kΩ（默认）",
+            "is_default": true
+          },
+          {
+            "value": "3",
+            "description": "10 kΩ",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "RDCHG_INT_SEL0",
+        "bits": "[5:4]",
+        "bit_high": 5,
+        "bit_low": 4,
+        "description": "PC0~PC3和内部端口PC6的片上放电电阻选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "180 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "90 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "30 kΩ（默认）",
+            "is_default": true
+          },
+          {
+            "value": "3",
+            "description": "10 kΩ",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "RDCHG_INT_EN",
+        "bits": "[3]",
+        "bit_high": 3,
+        "bit_low": 3,
+        "description": "内部放电电阻使能",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "内部开启（默认）",
+            "is_default": true
+          }
+        ]
+      },
+      {
+        "name": "RDCHG_EXT_EN",
+        "bits": "[1]",
+        "bit_high": 1,
+        "bit_low": 1,
+        "description": "外部放电电阻使能",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "description": "外部开启（在PCAUX上切换外部放电电阻，在放电阶段高阻，在预充和满充阶段为高阻）",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg3": {
+    "register_number": 3,
+    "hex_address": "0x10",
+    "current_value": null,
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "AUX_PD_DIS",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "禁用PCAUX下拉电阻",
+        "options": [
+          {
+            "value": "0",
+            "description": "下拉激活",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "下拉禁用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "AUX_CINT",
+        "bits": "[5]",
+        "bit_high": 5,
+        "bit_low": 5,
+        "description": "仅在内部参考转换期间激活辅助端口PCAUX",
+        "options": [
+          {
+            "value": "0",
+            "description": "正常（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "description": "在内部c参考转换期间激活辅助端口",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "RDCHG_OPEN",
+        "bits": "[4:3]",
+        "bit_high": 4,
+        "bit_low": 3,
+        "description": "ams内部位（推荐值: 2）",
+        "options": []
+      },
+      {
+        "name": "RDCHG_PERM_EN",
+        "bits": "[2]",
+        "bit_high": 2,
+        "bit_low": 2,
+        "description": "保持芯片内部放电电阻永久连接",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "description": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "RDCHG_EXT_PERM",
+        "bits": "[1]",
+        "bit_high": 1,
+        "bit_low": 1,
+        "description": "永久激活辅助端口PCAUX",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "description": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "RCHG_SEL",
+        "bits": "[0]",
+        "bit_high": 0,
+        "bit_low": 0,
+        "description": "选择充电电阻",
+        "options": [
+          {
+            "value": "0",
+            "description": "180 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "10 kΩ（默认）",
+            "is_default": true
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg4": {
+    "register_number": 4,
+    "hex_address": "0x10",
+    "current_value": null,
+    "description": "bit7用于选择使用外部参考电容或内部参考电容，内部参考电容值为1~31pF，如果我们需要测量的电容大于500pF时，务必使用外部参考电容。bit5为外部寄生电容补偿位，建议开启，这样芯片内部将会通过内部电路独立放电来测试寄生电容对测量值进行修正；bit4为内部寄生电容补偿位；bit1和bit0用于是独立测量还是差分测量。",
+    "bit_fields": [
+      {
+        "name": "C_REF_INT",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "使用片上参考电容",
+        "options": [
+          {
+            "value": "0",
+            "description": "外部参考（PC0/GND或PC0/PC1）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "内部参考（在CDC特殊端口PC6使用片上参考电容）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_COMP_EXT",
+        "bits": "[5]",
+        "bit_high": 5,
+        "bit_low": 5,
+        "description": "激活外部寄生电容补偿机制",
+        "options": [
+          {
+            "value": "0",
+            "description": "空闲",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "激活",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_COMP_INT",
+        "bits": "[4]",
+        "bit_high": 4,
+        "bit_low": 4,
+        "description": "激活片上寄生电容补偿机制和增益补偿",
+        "options": [
+          {
+            "value": "0",
+            "description": "空闲",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "激活",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_DIFFERENTIAL",
+        "bits": "[1]",
+        "bit_high": 1,
+        "bit_low": 1,
+        "description": "选择单端或差分传感器",
+        "options": [
+          {
+            "value": "0",
+            "description": "普通（单端）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "差分",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_FLOATING",
+        "bits": "[0]",
+        "bit_high": 0,
+        "bit_low": 0,
+        "description": "选择接地或浮动传感器",
+        "options": [
+          {
+            "value": "0",
+            "description": "接地",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "浮动",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg5": {
+    "register_number": 5,
+    "hex_address": "0x00",
+    "current_value": null,
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "CY_PRE_MR1_SHORT",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "减少内部时钟路径之间的延迟",
+        "options": [
+          {
+            "value": "0",
+            "description": "正常（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "description": "减少",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_PORT_PAT",
+        "bits": "[5]",
+        "bit_high": 5,
+        "bit_low": 5,
+        "description": "端口测量顺序交替",
+        "options": [
+          {
+            "value": "0",
+            "description": "正常",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "端口顺序交替（每次序列后反转测量端口的顺序）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "CY_HFCLK_SEL",
+        "bits": "[3]",
+        "bit_high": 3,
+        "bit_low": 3,
+        "description": "CDC时钟源选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "OLF（低频时钟）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "OHF（高频时钟）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "CY_DIV4_DIS",
+        "bits": "[2]",
+        "bit_high": 2,
+        "bit_low": 2,
+        "description": "四倍时钟周期（仅在与CY_HFCLK_SEL == 1组合时）",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "CY_PRE_LONG",
+        "bits": "[1]",
+        "bit_high": 1,
+        "bit_low": 1,
+        "description": "在内部时钟路径之间添加安全延迟",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "description": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_DC_BALANCE",
+        "bits": "[0]",
+        "bit_high": 0,
+        "bit_low": 0,
+        "description": "仅用于差分浮动模式",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭（\"single HiZ\"）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "直流自由（\"both HiZ\"）",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg6": {
+    "register_number": 6,
+    "hex_address": "0x3F",
+    "current_value": "0x000",
+    "description": ": 0x0003E8 = 1000（十进制）",
+    "bit_fields": [
+      {
+        "name": "C_PORT_EN",
+        "bits": "[5:0]",
+        "bit_high": 5,
+        "bit_low": 0,
+        "description": "位使能CDC端口（PC0到PC5）",
+        "options": []
+      },
+      {
+        "name": "C_AVRG",
+        "bits": "[12:0]",
+        "bit_high": 12,
+        "bit_low": 0,
+        "description": "设置CDC测量的平均采样数（从寄存器7开始的13位）",
+        "options": [
+          {
+            "value": "2",
+            "description": "采样大小 = 2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "采样大小 = 3",
+            "is_default": false
+          },
+          {
+            "value": "8191",
+            "description": "最大采样大小",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "CONV_TIME",
+        "bits": "[22:0]",
+        "bit_high": 22,
+        "bit_low": 0,
+        "description": "转换触发周期或序列周期（23位，从寄存器9开始）",
+        "options": []
+      },
+      {
+        "name": "DISCHARGE_TIME",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "设置CDC放电时间（10位，寄存器12的位[7:0]和寄存器13的位[1:0]）",
+        "options": [
+          {
+            "value": "1023",
+            "description": "关闭",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg13": {
+    "register_number": 13,
+    "hex_address": "0x08",
+    "current_value": "0x3FF",
+    "description": "（1）连续模式：一次转换结束后马上进行下一次转换，这种方式不推荐使用，因为可能你在转换的同时也在读取数据，增加测量噪声。",
+    "bit_fields": [
+      {
+        "name": "C_STARTONPIN",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "选择允许触发CDC启动的GPIO端口",
+        "options": [
+          {
+            "value": "0",
+            "description": "PG0",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "PG1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "PG2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "PG3",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_TRIG_SEL",
+        "bits": "[4:2]",
+        "bit_high": 4,
+        "bit_low": 2,
+        "description": "CDC触发模式选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "连续模式",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "读取触发",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "定时器触发",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "定时器触发（拉伸模式）",
+            "is_default": false
+          },
+          {
+            "value": "4",
+            "description": "未定义",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "description": "引脚触发（硬件触发）",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "description": "操作码触发",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "description": "continuous_exp（不推荐）",
+            "is_default": true
+          }
+        ]
+      },
+      {
+        "name": "DISCHARGE_TIME",
+        "bits": "[1:0]",
+        "bit_high": 1,
+        "bit_low": 0,
+        "description": "放电时间配置的低2位（参见寄存器12）",
+        "options": []
+      },
+      {
+        "name": "PRECHARGE_TIME",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "设置CDC预充电时间（10位，寄存器14的位[7:0]和寄存器15的位[1:0]）",
+        "options": [
+          {
+            "value": "1023",
+            "description": "关闭",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg15": {
+    "register_number": 15,
+    "hex_address": "0x03",
+    "current_value": "0x000",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "C_FAKE",
+        "bits": "[5:2]",
+        "bit_high": 5,
+        "bit_low": 2,
+        "description": "CDC的\"假\"或\"预热\"测量数量",
+        "options": [
+          {
+            "value": "0",
+            "description": "无假测量",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "1次假测量",
+            "is_default": false
+          },
+          {
+            "value": "15",
+            "description": "15次假测量",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PRECHARGE_TIME",
+        "bits": "[1:0]",
+        "bit_high": 1,
+        "bit_low": 0,
+        "description": "预充电时间配置的低2位（参见寄存器14）",
+        "options": []
+      },
+      {
+        "name": "FULLCHARGE_TIME",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "设置CDC满充电时间（10位，寄存器16的位[7:0]和寄存器17的位[1:0]）",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000011"
+  },
+  "Reg17": {
+    "register_number": 17,
+    "hex_address": "0x24",
+    "current_value": "0x24",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "C_REF_SEL",
+        "bits": "[6:2]",
+        "bit_high": 6,
+        "bit_low": 2,
+        "description": "设置片上参考电容（5位）",
+        "options": [
+          {
+            "value": "0",
+            "description": "最小值",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "约1 pF",
+            "is_default": false
+          },
+          {
+            "value": "31",
+            "description": "最大值（约31 pF）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "FULLCHARGE_TIME",
+        "bits": "[1:0]",
+        "bit_high": 1,
+        "bit_low": 0,
+        "description": "满充电时间配置的低2位（参见寄存器16）",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00100100"
+  },
+  "Reg18": {
+    "register_number": 18,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "C_G_OP_RUN",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "保护：运算放大器模式",
+        "options": [
+          {
+            "value": "0",
+            "description": "永久",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "脉冲（在转换之间将OP设置为睡眠模式）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_G_OP_EXT",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "保护：激活外部运算放大器",
+        "options": [
+          {
+            "value": "0",
+            "description": "内部OP",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "外部OP，PG3作为C_G_MUX_SEL",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_G_EN",
+        "bits": "[5:0]",
+        "bit_high": 5,
+        "bit_low": 0,
+        "description": "保护使能，每位对应一个端口",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000000"
+  },
+  "Reg19": {
+    "register_number": 19,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "C_G_OP_VU",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "保护：运算放大器增益（从感测端口到保护）",
+        "options": [
+          {
+            "value": "0",
+            "description": "× 1.00",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "× 1.01",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "× 1.02",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "× 1.03",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_G_OP_ATTN",
+        "bits": "[5:4]",
+        "bit_high": 5,
+        "bit_low": 4,
+        "description": "保护：运算放大器衰减",
+        "options": [
+          {
+            "value": "0",
+            "description": "0.5 aF",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "1.0 aF",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "1.5 aF",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "2.0 aF",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "C_G_TIME",
+        "bits": "[3:0]",
+        "bit_high": 3,
+        "bit_low": 0,
+        "description": "保护：在预充电期间将保护端口从\"直接连接\"切换到OP的时间",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000000"
+  },
+  "Reg20": {
+    "register_number": 20,
+    "hex_address": "0x00",
+    "current_value": "0x001",
+    "description": "| OLF频率 | R_CY=0 | R_CY=1 |",
+    "bit_fields": [
+      {
+        "name": "R_CY",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "RDC测定的循环时间（取决于OLF频率）",
+        "options": []
+      },
+      {
+        "name": "C_G_OP_TR",
+        "bits": "[2:0]",
+        "bit_high": 2,
+        "bit_low": 0,
+        "description": "保护运算放大器电流调整",
+        "options": [
+          {
+            "value": "0",
+            "description": "7: 推荐值",
+            "is_default": true
+          }
+        ]
+      },
+      {
+        "name": "R_TRIG_PREDIV",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "预分频器（10位，寄存器21的位[7:0]和寄存器22的位[1:0]）",
+        "options": [
+          {
+            "value": "2",
+            "description": "每2次信号触发",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "每3次信号触发",
+            "is_default": false
+          },
+          {
+            "value": "1023",
+            "description": "最大因子",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000000"
+  },
+  "Reg22": {
+    "register_number": 22,
+    "hex_address": "0x50",
+    "current_value": "0x50",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "R_TRIG_SEL",
+        "bits": "[6:4]",
+        "bit_high": 6,
+        "bit_low": 4,
+        "description": "RDC触发源选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "定时器触发",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "引脚触发",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "description": "CDC异步（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "6",
+            "description": "CDC同步",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "R_AVRG",
+        "bits": "[3:2]",
+        "bit_high": 3,
+        "bit_low": 2,
+        "description": "RDC测定的平均值配置",
+        "options": [
+          {
+            "value": "0",
+            "description": "不平均",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "4次平均",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "8次平均",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "16次平均",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "R_TRIG_PREDIV",
+        "bits": "[1:0]",
+        "bit_high": 1,
+        "bit_low": 0,
+        "description": "预分频器配置的低2位（参见寄存器21）",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b01010000"
+  },
+  "Reg23": {
+    "register_number": 23,
+    "hex_address": "0x30",
+    "current_value": "0x30",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "R_PORT_EN",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "RDC部分的端口激活",
+        "options": []
+      },
+      {
+        "name": "R_PORT_EN_IMES",
+        "bits": "[5]",
+        "bit_high": 5,
+        "bit_low": 5,
+        "description": "内部铝温度传感器的端口激活",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "R_PORT_EN_IREF",
+        "bits": "[4]",
+        "bit_high": 4,
+        "bit_low": 4,
+        "description": "内部参考电阻的端口激活",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "R_FAKE",
+        "bits": "[2]",
+        "bit_high": 2,
+        "bit_low": 2,
+        "description": "RDC的\"假\"或\"预热\"测量数量",
+        "options": [
+          {
+            "value": "0",
+            "description": "每次平均有2次假测量周期",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "每次平均有8次假测量周期",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "R_STARTONPIN",
+        "bits": "[1:0]",
+        "bit_high": 1,
+        "bit_low": 0,
+        "description": "选择允许触发RDC启动的GPIO端口",
+        "options": [
+          {
+            "value": "0",
+            "description": "PG0",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "PG1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "PG2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "PG3",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00110000"
+  },
+  "Reg27": {
+    "register_number": 27,
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "DSP_MOFLO_EN",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "在GPIO脉冲线中启用单稳态（防抖滤波器）",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "DSP_SPEED",
+        "bits": "[3:2]",
+        "bit_high": 3,
+        "bit_low": 2,
+        "description": "DSP速度",
+        "options": [
+          {
+            "value": "0",
+            "description": "最快",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "快",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "慢（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "3",
+            "description": "最慢",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PG1xPG3",
+        "bits": "[1]",
+        "bit_high": 1,
+        "bit_low": 1,
+        "description": "切换PG1/PG3到/从DSP的接线",
+        "options": [
+          {
+            "value": "0",
+            "description": "脉冲输出在PG3",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "脉冲输出在PG1",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PG0xPG2",
+        "bits": "[0]",
+        "bit_high": 0,
+        "bit_low": 0,
+        "description": "切换PG0/PG2到/从DSP的接线",
+        "options": [
+          {
+            "value": "0",
+            "description": "脉冲输出在PG2",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "脉冲输出在PG0",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00001000"
+  },
+  "Reg28": {
+    "register_number": 28,
+    "hex_address": "0x5A",
+    "current_value": "0x5A",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "WD_DIS",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "看门狗禁用",
+        "options": [
+          {
+            "value": "0x5A",
+            "description": "看门狗禁用（关闭）",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg29": {
+    "register_number": 29,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "DSP_STARTONPIN",
+        "bits": "[7:4]",
+        "bit_high": 7,
+        "bit_low": 4,
+        "description": "启动DSP的引脚掩码（位方式PG0到PG3）",
+        "options": []
+      },
+      {
+        "name": "DSP_FF_IN",
+        "bits": "[3:0]",
+        "bit_high": 3,
+        "bit_low": 0,
+        "description": "触发器激活的引脚掩码（位方式DSP_IN_0到DSP_IN_3）",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000000"
+  },
+  "Reg30": {
+    "register_number": 30,
+    "hex_address": "0x82",
+    "current_value": "0x82",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "PG5_INTN_EN",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "将INTN信号路由到PG5",
+        "options": [
+          {
+            "value": "0",
+            "description": "PG5正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "PG5 <== INTN",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PG4_INTN_EN",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "将INTN信号路由到PG4",
+        "options": [
+          {
+            "value": "0",
+            "description": "PG4正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "PG4 <== INTN",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "DSP_START_EN",
+        "bits": "[2:0]",
+        "bit_high": 2,
+        "bit_low": 0,
+        "description": "DSP触发器启用",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b10000010"
+  },
+  "Reg31": {
+    "register_number": 31,
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "PI1_TOGGLE_EN",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "在脉冲接口1输出激活切换触发器",
+        "options": [
+          {
+            "value": "0",
+            "description": "正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "切换触发器激活（特别适用于PDM以创建1:1占空比）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PIO_TOGGLE_EN",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "在脉冲接口0输出激活切换触发器",
+        "options": [
+          {
+            "value": "0",
+            "description": "正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "切换触发器激活（特别适用于PDM以创建1:1占空比）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PIO_RES",
+        "bits": "[5:4]",
+        "bit_high": 5,
+        "bit_low": 4,
+        "description": "脉冲编码接口0的分辨率",
+        "options": [
+          {
+            "value": "0",
+            "description": "10位",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "12位",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "14位",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "16位",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PIO_PDM_SEL",
+        "bits": "[3]",
+        "bit_high": 3,
+        "bit_low": 3,
+        "description": "脉冲接口0 PWM / PDM开关",
+        "options": [
+          {
+            "value": "0",
+            "description": "PWM",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "PDM",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PIO_CLK_SEL",
+        "bits": "[2:0]",
+        "bit_high": 2,
+        "bit_low": 0,
+        "description": "脉冲接口0时钟选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "OLF / 1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "OLF / 2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "OLF / 4",
+            "is_default": false
+          },
+          {
+            "value": "4",
+            "description": "OX / 1",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "description": "OX / 2",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "description": "OX / 4",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "description": "未定义",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00001000"
+  },
+  "Reg32": {
+    "register_number": 32,
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "PI1_RES",
+        "bits": "[5:4]",
+        "bit_high": 5,
+        "bit_low": 4,
+        "description": "脉冲接口1的分辨率",
+        "options": [
+          {
+            "value": "0",
+            "description": "10位",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "12位",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "14位",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "16位",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PI1_PDM_SEL",
+        "bits": "[3]",
+        "bit_high": 3,
+        "bit_low": 3,
+        "description": "脉冲接口1 PWM / PDM开关",
+        "options": [
+          {
+            "value": "0",
+            "description": "PWM",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "PDM",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PI1_CLK_SEL",
+        "bits": "[2:0]",
+        "bit_high": 2,
+        "bit_low": 0,
+        "description": "脉冲接口1时钟选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "OLF / 1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "description": "OLF / 2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "description": "OLF / 4",
+            "is_default": false
+          },
+          {
+            "value": "4",
+            "description": "OX / 1",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "description": "OX / 2",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "description": "OX / 4",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "description": "未定义",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00001000"
+  },
+  "Reg33": {
+    "register_number": 33,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "PG_DIR_IN",
+        "bits": "[7:4]",
+        "bit_high": 7,
+        "bit_low": 4,
+        "description": "通用端口方向切换（输入/输出）",
+        "options": []
+      },
+      {
+        "name": "PG_PU",
+        "bits": "[3:0]",
+        "bit_high": 3,
+        "bit_low": 0,
+        "description": "在通用端口激活保护上拉电阻",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000000"
+  },
+  "Reg34": {
+    "register_number": 34,
+    "hex_address": "0x47",
+    "current_value": "0x47",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "INT_TRIG_BG",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "读取结束触发带隙",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "DSP_TRIG_BG",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "带隙刷新由DSP位设置触发",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "BG_PERM",
+        "bits": "[5]",
+        "bit_high": 5,
+        "bit_low": 5,
+        "description": "激活带隙永久启用",
+        "options": [
+          {
+            "value": "0",
+            "description": "带隙脉冲模式",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "带隙永久启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "AUTOSTART",
+        "bits": "[4]",
+        "bit_high": 4,
+        "bit_low": 4,
+        "description": "在上电后触发CDC",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "启用（用于独立操作，在上电后触发CDC）",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b01000111"
+  },
+  "Reg35": {
+    "register_number": 35,
+    "hex_address": "0x40",
+    "current_value": "0x40",
+    "description": "",
+    "bit_fields": [],
+    "options": {}
+  },
+  "Reg36": {
+    "register_number": 36,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [],
+    "options": {}
+  },
+  "Reg37": {
+    "register_number": 37,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [],
+    "options": {}
+  },
+  "Reg38": {
+    "register_number": 38,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "BG_TIME",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "带隙时间（固件定义）",
+        "options": [
+          {
+            "value": "0",
+            "description": "推荐值",
+            "is_default": true
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg39": {
+    "register_number": 39,
+    "hex_address": "0x71",
+    "current_value": "0x71",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "PULSE_SEL1",
+        "bits": "[7:4]",
+        "bit_high": 7,
+        "bit_low": 4,
+        "description": "为脉冲接口1选择源（固件定义）",
+        "options": [
+          {
+            "value": "0",
+            "description": "5: Res0到Res5 (C0..5 / Cref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "description": "Res6 (PT1/Ref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "description": "Res7 (Alu/Ref @PCap04_standard)",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "PULSE_SEL0",
+        "bits": "[3:0]",
+        "bit_high": 3,
+        "bit_low": 0,
+        "description": "为脉冲接口0选择源（固件定义）",
+        "options": [
+          {
+            "value": "0",
+            "description": "5: Res0到Res5 (C0..5 / Cref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "description": "Res6 (PT1/Ref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "description": "Res7 (Alu/Ref @PCap04_standard)",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b01110001"
+  },
+  "Reg40": {
+    "register_number": 40,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "C_SENSE_SEL",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "电容比率选择（仅PCap04_linearize固件）",
+        "options": [
+          {
+            "value": "0",
+            "description": "5: C0到C5 / Cref（用于线性化的电容比率选择）",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg41": {
+    "register_number": 41,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "R_SENSE_SEL",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "电阻比率选择（仅PCap04_linearize固件）",
+        "options": []
+      }
+    ],
+    "options": {}
+  },
+  "Reg42": {
+    "register_number": 42,
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "ALARM1_SELECT",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "报警1选择（仅PCap04_linearize固件）",
+        "options": []
+      },
+      {
+        "name": "ALARM0_SELECT",
+        "bits": "[4]",
+        "bit_high": 4,
+        "bit_low": 4,
+        "description": "报警0选择（仅PCap04_linearize固件）",
+        "options": []
+      },
+      {
+        "name": "EN_ASYNC_READ",
+        "bits": "[3]",
+        "bit_high": 3,
+        "bit_low": 3,
+        "description": "启用异步读取",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "激活（结果寄存器Res0到Res7中的值仅在读取先前值后才更新）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "name": "HS_MODE_SEL",
+        "bits": "[2]",
+        "bit_high": 2,
+        "bit_low": 2,
+        "description": "ams内部位（必须为0）",
+        "options": []
+      },
+      {
+        "name": "R_MEDIAN_EN",
+        "bits": "[1]",
+        "bit_high": 1,
+        "bit_low": 1,
+        "description": "启用R的中值滤波器（仅PCap04_linearize固件）",
+        "options": []
+      },
+      {
+        "name": "C_MEDIAN_EN",
+        "bits": "[0]",
+        "bit_high": 0,
+        "bit_low": 0,
+        "description": "启用C的中值滤波器（仅PCap04_linearize固件）",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00001000"
+  },
+  "Reg47": {
+    "register_number": 47,
+    "hex_address": "0x01",
+    "current_value": "0x01",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "RUNBIT",
+        "bits": "[0]",
+        "bit_high": 0,
+        "bit_low": 0,
+        "description": "前端和DSP的开关",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭 = 芯片系统空闲并受保护",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "description": "开启 = 保护被移除，系统可以运行",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000001"
+  },
+  "Reg48": {
+    "register_number": 48,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "MEM_LOCK",
+        "bits": "[3:0]",
+        "bit_high": 3,
+        "bit_low": 0,
+        "description": "数据安全功能，保护NVRAM的部分区域免于通过SIF读取和写入",
+        "options": []
+      }
+    ],
+    "options": {},
+    "binary_value": "0b00000000"
+  },
+  "Reg49": {
+    "register_number": 49,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [],
+    "options": {}
+  },
+  "Reg50": {
+    "register_number": 50,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [],
+    "options": {}
+  },
+  "Reg54": {
+    "register_number": 54,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [
+      {
+        "name": "MEM_CTRL",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "内存控制",
+        "options": [
+          {
+            "value": "0x2D",
+            "description": "NVRAM存储启用（将配置存储到NVRAM）",
+            "is_default": false
+          },
+          {
+            "value": "0x59",
+            "description": "NVRAM召回启用（从NVRAM重新加载配置）",
+            "is_default": false
+          },
+          {
+            "value": "0xB8",
+            "description": "NVRAM擦除（擦除NVRAM）",
+            "is_default": false
+          }
+        ]
+      }
+    ],
+    "options": {}
+  },
+  "Reg62": {
+    "register_number": 62,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "",
+    "bit_fields": [],
+    "options": {}
+  },
+  "Reg63": {
+    "register_number": 63,
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "description": "TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。",
+    "bit_fields": [],
+    "options": {}
+  }
+}

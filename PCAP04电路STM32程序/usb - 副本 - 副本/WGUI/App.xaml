@@ -1,0 +1,113 @@
+<Application x:Class="USBMatrixDisplay.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Mac 风格资源 -->
+        <SolidColorBrush x:Key="MacBackgroundBrush" Color="#F5F5FA"/>
+        <SolidColorBrush x:Key="MacPanelBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="MacBorderBrush" Color="#DCDCE1"/>
+        <SolidColorBrush x:Key="MacTextBrush" Color="#323232"/>
+        <SolidColorBrush x:Key="MacSecondaryTextBrush" Color="#808080"/>
+        <SolidColorBrush x:Key="MacBlueBrush" Color="#007AFF"/>
+        <SolidColorBrush x:Key="MacGreenBrush" Color="#00C800"/>
+        <SolidColorBrush x:Key="MacRedBrush" Color="#FF0000"/>
+        <SolidColorBrush x:Key="MacGrayBrush" Color="#8E8E93"/>
+        
+        <!-- Mac 风格按钮样式 -->
+        <Style x:Key="MacStyleButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource MacBlueBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="16,6"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="MinWidth" Value="90"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#1A7AFF"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#0056CC"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource MacGrayBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Mac 风格面板样式 -->
+        <Style x:Key="MacStylePanel" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource MacPanelBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource MacBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="12"/>
+        </Style>
+        
+        <!-- Mac 风格标签样式 -->
+        <Style x:Key="MacStyleLabel" TargetType="Label">
+            <Setter Property="Foreground" Value="{StaticResource MacTextBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        
+        <!-- Mac 风格文本框样式 -->
+        <Style x:Key="MacStyleTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource MacTextBrush}"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                BorderBrush="{StaticResource MacBorderBrush}"
+                                BorderThickness="1">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Mac 风格组合框样式 -->
+        <Style x:Key="MacStyleComboBox" TargetType="ComboBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource MacTextBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource MacBorderBrush}"/>
+        </Style>
+    </Application.Resources>
+</Application>
+

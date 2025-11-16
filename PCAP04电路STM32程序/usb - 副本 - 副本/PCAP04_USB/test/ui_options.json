@@ -1,0 +1,1560 @@
+{
+  "Reg0": {
+    "register": "Reg0",
+    "hex_address": "0x1D",
+    "current_value": "0x000",
+    "configurable_fields": [
+      {
+        "field_name": "I2C_A",
+        "bits": "[7:6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "3: I²C地址补码（用于设置I²C从机地址）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "OLF_FTUNE",
+        "bits": "[5:2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "最小值",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "label": "典型值（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "15",
+            "label": "最大值",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg1": {
+    "register": "Reg1",
+    "hex_address": "0x00",
+    "current_value": null,
+    "configurable_fields": [
+      {
+        "field_name": "OX_DIS",
+        "bits": "[7]",
+        "options": [
+          {
+            "value": "0",
+            "label": "启用（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "label": "禁用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "OX_DIV4",
+        "bits": "[5]",
+        "options": [
+          {
+            "value": "0",
+            "label": "不分频，f_ox = 2MHz",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "4分频，f_ox = 0.5MHz",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "OX_RUN",
+        "bits": "[2:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "发生器关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "OX永久运行",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "OX延迟 = 31 / fOLF",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "OX延迟 = 2 / fOLF",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "label": "OX延迟 = 1 / fOLF",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg2": {
+    "register": "Reg2",
+    "hex_address": "0x58",
+    "current_value": null,
+    "configurable_fields": [
+      {
+        "field_name": "RDCHG_INT_SEL1",
+        "bits": "[7:6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "180 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "90 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "30 kΩ（默认）",
+            "is_default": true
+          },
+          {
+            "value": "3",
+            "label": "10 kΩ",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "RDCHG_INT_SEL0",
+        "bits": "[5:4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "180 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "90 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "30 kΩ（默认）",
+            "is_default": true
+          },
+          {
+            "value": "3",
+            "label": "10 kΩ",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "RDCHG_INT_EN",
+        "bits": "[3]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "内部开启（默认）",
+            "is_default": true
+          }
+        ]
+      },
+      {
+        "field_name": "RDCHG_EXT_EN",
+        "bits": "[1]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "label": "外部开启（在PCAUX上切换外部放电电阻，在放电阶段高阻，在预充和满充阶段为高阻）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg3": {
+    "register": "Reg3",
+    "hex_address": "0x10",
+    "current_value": null,
+    "configurable_fields": [
+      {
+        "field_name": "AUX_PD_DIS",
+        "bits": "[6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "下拉激活",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "下拉禁用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "AUX_CINT",
+        "bits": "[5]",
+        "options": [
+          {
+            "value": "0",
+            "label": "正常（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "label": "在内部c参考转换期间激活辅助端口",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "RDCHG_PERM_EN",
+        "bits": "[2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "label": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "RDCHG_EXT_PERM",
+        "bits": "[1]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭（默认）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "label": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "RCHG_SEL",
+        "bits": "[0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "180 kΩ",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "10 kΩ（默认）",
+            "is_default": true
+          }
+        ]
+      }
+    ]
+  },
+  "Reg4": {
+    "register": "Reg4",
+    "hex_address": "0x10",
+    "current_value": null,
+    "configurable_fields": [
+      {
+        "field_name": "C_REF_INT",
+        "bits": "[7]",
+        "options": [
+          {
+            "value": "0",
+            "label": "外部参考（PC0/GND或PC0/PC1）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "内部参考（在CDC特殊端口PC6使用片上参考电容）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_COMP_EXT",
+        "bits": "[5]",
+        "options": [
+          {
+            "value": "0",
+            "label": "空闲",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "激活",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_COMP_INT",
+        "bits": "[4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "空闲",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "激活",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_DIFFERENTIAL",
+        "bits": "[1]",
+        "options": [
+          {
+            "value": "0",
+            "label": "普通（单端）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "差分",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_FLOATING",
+        "bits": "[0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "接地",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "浮动",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg5": {
+    "register": "Reg5",
+    "hex_address": "0x00",
+    "current_value": null,
+    "configurable_fields": [
+      {
+        "field_name": "CY_PRE_MR1_SHORT",
+        "bits": "[7]",
+        "options": [
+          {
+            "value": "0",
+            "label": "正常（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "label": "减少",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_PORT_PAT",
+        "bits": "[5]",
+        "options": [
+          {
+            "value": "0",
+            "label": "正常",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "端口顺序交替（每次序列后反转测量端口的顺序）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "CY_HFCLK_SEL",
+        "bits": "[3]",
+        "options": [
+          {
+            "value": "0",
+            "label": "OLF（低频时钟）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "OHF（高频时钟）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "CY_DIV4_DIS",
+        "bits": "[2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "CY_PRE_LONG",
+        "bits": "[1]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "1",
+            "label": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_DC_BALANCE",
+        "bits": "[0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭（\"single HiZ\"）",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "直流自由（\"both HiZ\"）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg6": {
+    "register": "Reg6",
+    "hex_address": "0x3F",
+    "current_value": "0x000",
+    "configurable_fields": [
+      {
+        "field_name": "C_AVRG",
+        "bits": "[12:0]",
+        "options": [
+          {
+            "value": "2",
+            "label": "采样大小 = 2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "采样大小 = 3",
+            "is_default": false
+          },
+          {
+            "value": "8191",
+            "label": "最大采样大小",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "DISCHARGE_TIME",
+        "bits": "[9:0]",
+        "options": [
+          {
+            "value": "1023",
+            "label": "关闭",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg13": {
+    "register": "Reg13",
+    "hex_address": "0x08",
+    "current_value": "0x3FF",
+    "configurable_fields": [
+      {
+        "field_name": "C_STARTONPIN",
+        "bits": "[7:6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "PG0",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "PG1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "PG2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "PG3",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_TRIG_SEL",
+        "bits": "[4:2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "连续模式",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "读取触发",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "定时器触发",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "定时器触发（拉伸模式）",
+            "is_default": false
+          },
+          {
+            "value": "4",
+            "label": "未定义",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "label": "引脚触发（硬件触发）",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "label": "操作码触发",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "label": "continuous_exp（不推荐）",
+            "is_default": true
+          }
+        ]
+      },
+      {
+        "field_name": "PRECHARGE_TIME",
+        "bits": "[9:0]",
+        "options": [
+          {
+            "value": "1023",
+            "label": "关闭",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg15": {
+    "register": "Reg15",
+    "hex_address": "0x03",
+    "current_value": "0x000",
+    "configurable_fields": [
+      {
+        "field_name": "C_FAKE",
+        "bits": "[5:2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "无假测量",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "1次假测量",
+            "is_default": false
+          },
+          {
+            "value": "15",
+            "label": "15次假测量",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg17": {
+    "register": "Reg17",
+    "hex_address": "0x24",
+    "current_value": "0x24",
+    "configurable_fields": [
+      {
+        "field_name": "C_REF_SEL",
+        "bits": "[6:2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "最小值",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "约1 pF",
+            "is_default": false
+          },
+          {
+            "value": "31",
+            "label": "最大值（约31 pF）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg18": {
+    "register": "Reg18",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": [
+      {
+        "field_name": "C_G_OP_RUN",
+        "bits": "[7]",
+        "options": [
+          {
+            "value": "0",
+            "label": "永久",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "脉冲（在转换之间将OP设置为睡眠模式）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_G_OP_EXT",
+        "bits": "[6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "内部OP",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "外部OP，PG3作为C_G_MUX_SEL",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg19": {
+    "register": "Reg19",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": [
+      {
+        "field_name": "C_G_OP_VU",
+        "bits": "[7:6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "× 1.00",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "× 1.01",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "× 1.02",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "× 1.03",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "C_G_OP_ATTN",
+        "bits": "[5:4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "0.5 aF",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "1.0 aF",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "1.5 aF",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "2.0 aF",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg20": {
+    "register": "Reg20",
+    "hex_address": "0x00",
+    "current_value": "0x001",
+    "configurable_fields": [
+      {
+        "field_name": "C_G_OP_TR",
+        "bits": "[2:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "7: 推荐值",
+            "is_default": true
+          }
+        ]
+      },
+      {
+        "field_name": "R_TRIG_PREDIV",
+        "bits": "[9:0]",
+        "options": [
+          {
+            "value": "2",
+            "label": "每2次信号触发",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "每3次信号触发",
+            "is_default": false
+          },
+          {
+            "value": "1023",
+            "label": "最大因子",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg22": {
+    "register": "Reg22",
+    "hex_address": "0x50",
+    "current_value": "0x50",
+    "configurable_fields": [
+      {
+        "field_name": "R_TRIG_SEL",
+        "bits": "[6:4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "定时器触发",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "引脚触发",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "label": "CDC异步（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "6",
+            "label": "CDC同步",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "R_AVRG",
+        "bits": "[3:2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "不平均",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "4次平均",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "8次平均",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "16次平均",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg23": {
+    "register": "Reg23",
+    "hex_address": "0x30",
+    "current_value": "0x30",
+    "configurable_fields": [
+      {
+        "field_name": "R_PORT_EN_IMES",
+        "bits": "[5]",
+        "options": [
+          {
+            "value": "0",
+            "label": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "R_PORT_EN_IREF",
+        "bits": "[4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "R_FAKE",
+        "bits": "[2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "每次平均有2次假测量周期",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "每次平均有8次假测量周期",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "R_STARTONPIN",
+        "bits": "[1:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "PG0",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "PG1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "PG2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "PG3",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg27": {
+    "register": "Reg27",
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "configurable_fields": [
+      {
+        "field_name": "DSP_MOFLO_EN",
+        "bits": "[7:6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "开启",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "DSP_SPEED",
+        "bits": "[3:2]",
+        "options": [
+          {
+            "value": "0",
+            "label": "最快",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "快",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "慢（推荐）",
+            "is_default": true
+          },
+          {
+            "value": "3",
+            "label": "最慢",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PG1xPG3",
+        "bits": "[1]",
+        "options": [
+          {
+            "value": "0",
+            "label": "脉冲输出在PG3",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "脉冲输出在PG1",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PG0xPG2",
+        "bits": "[0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "脉冲输出在PG2",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "脉冲输出在PG0",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg28": {
+    "register": "Reg28",
+    "hex_address": "0x5A",
+    "current_value": "0x5A",
+    "configurable_fields": [
+      {
+        "field_name": "WD_DIS",
+        "bits": "[7:0]",
+        "options": [
+          {
+            "value": "0x5A",
+            "label": "看门狗禁用（关闭）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg29": {
+    "register": "Reg29",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": []
+  },
+  "Reg30": {
+    "register": "Reg30",
+    "hex_address": "0x82",
+    "current_value": "0x82",
+    "configurable_fields": [
+      {
+        "field_name": "PG5_INTN_EN",
+        "bits": "[7]",
+        "options": [
+          {
+            "value": "0",
+            "label": "PG5正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "PG5 <== INTN",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PG4_INTN_EN",
+        "bits": "[6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "PG4正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "PG4 <== INTN",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg31": {
+    "register": "Reg31",
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "configurable_fields": [
+      {
+        "field_name": "PI1_TOGGLE_EN",
+        "bits": "[7]",
+        "options": [
+          {
+            "value": "0",
+            "label": "正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "切换触发器激活（特别适用于PDM以创建1:1占空比）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PIO_TOGGLE_EN",
+        "bits": "[6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "正常工作",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "切换触发器激活（特别适用于PDM以创建1:1占空比）",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PIO_RES",
+        "bits": "[5:4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "10位",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "12位",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "14位",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "16位",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PIO_PDM_SEL",
+        "bits": "[3]",
+        "options": [
+          {
+            "value": "0",
+            "label": "PWM",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "PDM",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PIO_CLK_SEL",
+        "bits": "[2:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "OLF / 1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "OLF / 2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "OLF / 4",
+            "is_default": false
+          },
+          {
+            "value": "4",
+            "label": "OX / 1",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "label": "OX / 2",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "label": "OX / 4",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "label": "未定义",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg32": {
+    "register": "Reg32",
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "configurable_fields": [
+      {
+        "field_name": "PI1_RES",
+        "bits": "[5:4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "10位",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "12位",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "14位",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "16位",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PI1_PDM_SEL",
+        "bits": "[3]",
+        "options": [
+          {
+            "value": "0",
+            "label": "PWM",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "PDM",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PI1_CLK_SEL",
+        "bits": "[2:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "OLF / 1",
+            "is_default": false
+          },
+          {
+            "value": "2",
+            "label": "OLF / 2",
+            "is_default": false
+          },
+          {
+            "value": "3",
+            "label": "OLF / 4",
+            "is_default": false
+          },
+          {
+            "value": "4",
+            "label": "OX / 1",
+            "is_default": false
+          },
+          {
+            "value": "5",
+            "label": "OX / 2",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "label": "OX / 4",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "label": "未定义",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg33": {
+    "register": "Reg33",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": []
+  },
+  "Reg34": {
+    "register": "Reg34",
+    "hex_address": "0x47",
+    "current_value": "0x47",
+    "configurable_fields": [
+      {
+        "field_name": "INT_TRIG_BG",
+        "bits": "[7]",
+        "options": [
+          {
+            "value": "0",
+            "label": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "DSP_TRIG_BG",
+        "bits": "[6]",
+        "options": [
+          {
+            "value": "0",
+            "label": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "BG_PERM",
+        "bits": "[5]",
+        "options": [
+          {
+            "value": "0",
+            "label": "带隙脉冲模式",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "带隙永久启用",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "AUTOSTART",
+        "bits": "[4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "启用（用于独立操作，在上电后触发CDC）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg38": {
+    "register": "Reg38",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": [
+      {
+        "field_name": "BG_TIME",
+        "bits": "[7:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "推荐值",
+            "is_default": true
+          }
+        ]
+      }
+    ]
+  },
+  "Reg39": {
+    "register": "Reg39",
+    "hex_address": "0x71",
+    "current_value": "0x71",
+    "configurable_fields": [
+      {
+        "field_name": "PULSE_SEL1",
+        "bits": "[7:4]",
+        "options": [
+          {
+            "value": "0",
+            "label": "5: Res0到Res5 (C0..5 / Cref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "label": "Res6 (PT1/Ref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "label": "Res7 (Alu/Ref @PCap04_standard)",
+            "is_default": false
+          }
+        ]
+      },
+      {
+        "field_name": "PULSE_SEL0",
+        "bits": "[3:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "5: Res0到Res5 (C0..5 / Cref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "6",
+            "label": "Res6 (PT1/Ref @PCap04_standard)",
+            "is_default": false
+          },
+          {
+            "value": "7",
+            "label": "Res7 (Alu/Ref @PCap04_standard)",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg40": {
+    "register": "Reg40",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": [
+      {
+        "field_name": "C_SENSE_SEL",
+        "bits": "[7:0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "5: C0到C5 / Cref（用于线性化的电容比率选择）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg41": {
+    "register": "Reg41",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": []
+  },
+  "Reg42": {
+    "register": "Reg42",
+    "hex_address": "0x08",
+    "current_value": "0x08",
+    "configurable_fields": [
+      {
+        "field_name": "EN_ASYNC_READ",
+        "bits": "[3]",
+        "options": [
+          {
+            "value": "0",
+            "label": "禁用",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "激活（结果寄存器Res0到Res7中的值仅在读取先前值后才更新）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg47": {
+    "register": "Reg47",
+    "hex_address": "0x01",
+    "current_value": "0x01",
+    "configurable_fields": [
+      {
+        "field_name": "RUNBIT",
+        "bits": "[0]",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭 = 芯片系统空闲并受保护",
+            "is_default": false
+          },
+          {
+            "value": "1",
+            "label": "开启 = 保护被移除，系统可以运行",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  },
+  "Reg48": {
+    "register": "Reg48",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": []
+  },
+  "Reg54": {
+    "register": "Reg54",
+    "hex_address": "0x00",
+    "current_value": "0x00",
+    "configurable_fields": [
+      {
+        "field_name": "MEM_CTRL",
+        "bits": "[7:0]",
+        "options": [
+          {
+            "value": "0x2D",
+            "label": "NVRAM存储启用（将配置存储到NVRAM）",
+            "is_default": false
+          },
+          {
+            "value": "0x59",
+            "label": "NVRAM召回启用（从NVRAM重新加载配置）",
+            "is_default": false
+          },
+          {
+            "value": "0xB8",
+            "label": "NVRAM擦除（擦除NVRAM）",
+            "is_default": false
+          }
+        ]
+      }
+    ]
+  }
+}

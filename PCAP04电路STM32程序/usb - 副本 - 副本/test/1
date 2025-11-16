@@ -1,0 +1,6 @@
+irm get.scoop.sh -outfile 'install.ps1'
+.\install.ps1 -RunAsAdmin [-OtherParameters ...]
+# I don't care about other parameters and want a one-line command
+iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+scoop install gcc gdb
+gcc --version

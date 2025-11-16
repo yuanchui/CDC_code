@@ -1,0 +1,1383 @@
+{
+  "0": {
+    "number": 0,
+    "hex_address": "0x1D",
+    "name": "IIC地址与低频时钟配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "I2C_A": {
+        "name": "I2C_A",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "I²C设备地址补码配置",
+        "options": [
+          {
+            "value": "0",
+            "description": "最小值"
+          },
+          {
+            "value": "7",
+            "description": "典型值（推荐）"
+          },
+          {
+            "value": "15",
+            "description": "最大值"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "1": {
+    "number": 1,
+    "hex_address": "0x00",
+    "name": "外部晶振时钟OX配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "OX_DIS": {
+        "name": "OX_DIS",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "禁用OX时钟",
+        "options": [
+          {
+            "value": "0",
+            "description": "启用（默认）"
+          },
+          {
+            "value": "1",
+            "description": "禁用"
+          },
+          {
+            "value": "0",
+            "description": "不分频，f_ox = 2MHz"
+          },
+          {
+            "value": "1",
+            "description": "4分频，f_ox = 0.5MHz"
+          },
+          {
+            "value": "0",
+            "description": "发生器关闭"
+          },
+          {
+            "value": "1",
+            "description": "OX永久运行"
+          },
+          {
+            "value": "2",
+            "description": "OX延迟 = 31 / fOLF"
+          },
+          {
+            "value": "3",
+            "description": "OX延迟 = 2 / fOLF"
+          },
+          {
+            "value": "6",
+            "description": "OX延迟 = 1 / fOLF"
+          }
+        ]
+      }
+    },
+    "notes": [
+      "**说明**: 延迟意味着在测量开始前振荡器的稳定时间。 ---"
+    ]
+  },
+  "2": {
+    "number": 2,
+    "hex_address": "0x58",
+    "name": "端口放电电阻配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "RDCHG_INT_SEL1": {
+        "name": "RDCHG_INT_SEL1",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "PC4~PC5的片上放电电阻选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "180 kΩ"
+          },
+          {
+            "value": "1",
+            "description": "90 kΩ"
+          },
+          {
+            "value": "2",
+            "description": "30 kΩ（默认）"
+          },
+          {
+            "value": "3",
+            "description": "10 kΩ"
+          },
+          {
+            "value": "0",
+            "description": "180 kΩ"
+          },
+          {
+            "value": "1",
+            "description": "90 kΩ"
+          },
+          {
+            "value": "2",
+            "description": "30 kΩ（默认）"
+          },
+          {
+            "value": "3",
+            "description": "10 kΩ"
+          },
+          {
+            "value": "0",
+            "description": "关闭"
+          },
+          {
+            "value": "1",
+            "description": "内部开启（默认）"
+          },
+          {
+            "value": "0",
+            "description": "关闭（默认）"
+          },
+          {
+            "value": "1",
+            "description": "外部开启（在PCAUX上切换外部放电电阻，在放电阶段高阻，在预充和满充阶段为高阻）"
+          }
+        ]
+      }
+    },
+    "notes": [
+      "**注意**: 使用外部放电电阻时，需要设置AUX_PD_DIS（寄存器3，位6）= 1"
+    ]
+  },
+  "3": {
+    "number": 3,
+    "hex_address": "0x10",
+    "name": "端口充放电电阻配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "AUX_PD_DIS": {
+        "name": "AUX_PD_DIS",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "禁用PCAUX下拉电阻",
+        "options": [
+          {
+            "value": "0",
+            "description": "下拉激活"
+          },
+          {
+            "value": "1",
+            "description": "下拉禁用"
+          },
+          {
+            "value": "0",
+            "description": "正常（默认）"
+          },
+          {
+            "value": "1",
+            "description": "在内部c参考转换期间激活辅助端口"
+          },
+          {
+            "value": "0",
+            "description": "关闭（默认）"
+          },
+          {
+            "value": "1",
+            "description": "开启"
+          },
+          {
+            "value": "0",
+            "description": "关闭（默认）"
+          },
+          {
+            "value": "1",
+            "description": "开启"
+          },
+          {
+            "value": "0",
+            "description": "180 kΩ"
+          },
+          {
+            "value": "1",
+            "description": "10 kΩ（默认）"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "4": {
+    "number": 4,
+    "hex_address": "0x10",
+    "name": "端口电容连接方式",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_REF_INT": {
+        "name": "C_REF_INT",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "使用片上参考电容",
+        "options": [
+          {
+            "value": "0",
+            "description": "外部参考（PC0/GND或PC0/PC1）"
+          },
+          {
+            "value": "1",
+            "description": "内部参考（在CDC特殊端口PC6使用片上参考电容）"
+          },
+          {
+            "value": "0",
+            "description": "空闲"
+          },
+          {
+            "value": "1",
+            "description": "激活"
+          },
+          {
+            "value": "0",
+            "description": "空闲"
+          },
+          {
+            "value": "1",
+            "description": "激活"
+          },
+          {
+            "value": "0",
+            "description": "普通（单端）"
+          },
+          {
+            "value": "1",
+            "description": "差分"
+          },
+          {
+            "value": "0",
+            "description": "接地"
+          },
+          {
+            "value": "1",
+            "description": "浮动"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "5": {
+    "number": 5,
+    "hex_address": "0x00",
+    "name": "CDC时钟与端口模式配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "CY_PRE_MR1_SHORT": {
+        "name": "CY_PRE_MR1_SHORT",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "减少内部时钟路径之间的延迟",
+        "options": [
+          {
+            "value": "0",
+            "description": "正常（推荐）"
+          },
+          {
+            "value": "1",
+            "description": "减少"
+          },
+          {
+            "value": "0",
+            "description": "正常"
+          },
+          {
+            "value": "1",
+            "description": "端口顺序交替（每次序列后反转测量端口的顺序）"
+          },
+          {
+            "value": "0",
+            "description": "OLF（低频时钟）"
+          },
+          {
+            "value": "1",
+            "description": "OHF（高频时钟）"
+          },
+          {
+            "value": "0",
+            "description": "关闭"
+          },
+          {
+            "value": "1",
+            "description": "开启"
+          },
+          {
+            "value": "0",
+            "description": "关闭（推荐）"
+          },
+          {
+            "value": "1",
+            "description": "开启"
+          },
+          {
+            "value": "0",
+            "description": "关闭（\"single HiZ\"）"
+          },
+          {
+            "value": "1",
+            "description": "直流自由（\"both HiZ\"）"
+          }
+        ]
+      }
+    },
+    "notes": [
+      "**注意**: CY_HFCLK_SEL和CY_DIV4_DIS在评估软件中组合为'Cycle Clock Select'"
+    ]
+  },
+  "6": {
+    "number": 6,
+    "hex_address": "0x3F",
+    "name": "测量端口使能配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_PORT_EN": {
+        "name": "C_PORT_EN",
+        "bits": "[5:0]",
+        "bit_high": 5,
+        "bit_low": 0,
+        "description": "位使能CDC端口（PC0到PC5）",
+        "options": []
+      },
+      "C_AVRG": {
+        "name": "C_AVRG",
+        "bits": "[12:0]",
+        "bit_high": 12,
+        "bit_low": 0,
+        "description": "设置CDC测量的平均采样数（从寄存器7开始的13位）",
+        "options": [
+          {
+            "value": "2",
+            "description": "采样大小 = 2"
+          },
+          {
+            "value": "3",
+            "description": "采样大小 = 3"
+          },
+          {
+            "value": "8191",
+            "description": "最大采样大小"
+          }
+        ]
+      },
+      "CONV_TIME": {
+        "name": "CONV_TIME",
+        "bits": "[22:0]",
+        "bit_high": 22,
+        "bit_low": 0,
+        "description": "转换触发周期或序列周期（23位，从寄存器9开始）",
+        "options": []
+      },
+      "DISCHARGE_TIME": {
+        "name": "DISCHARGE_TIME",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "设置CDC放电时间（10位，寄存器12的位[7:0]和寄存器13的位[1:0]）",
+        "options": [
+          {
+            "value": "1023",
+            "description": "关闭"
+          }
+        ]
+      }
+    },
+    "notes": [
+      "**说明**: 增加平均次数可以提高测量精度，但会降低测量速度。"
+    ]
+  },
+  "13": {
+    "number": 13,
+    "hex_address": "0x08",
+    "name": "GPIO触发与CDC启动配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_STARTONPIN": {
+        "name": "C_STARTONPIN",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "选择允许触发CDC启动的GPIO端口",
+        "options": [
+          {
+            "value": "0",
+            "description": "PG0"
+          },
+          {
+            "value": "1",
+            "description": "PG1"
+          },
+          {
+            "value": "2",
+            "description": "PG2"
+          },
+          {
+            "value": "3",
+            "description": "PG3"
+          },
+          {
+            "value": "0",
+            "description": "连续模式"
+          },
+          {
+            "value": "1",
+            "description": "读取触发"
+          },
+          {
+            "value": "2",
+            "description": "定时器触发"
+          },
+          {
+            "value": "3",
+            "description": "定时器触发（拉伸模式）"
+          },
+          {
+            "value": "4",
+            "description": "未定义"
+          },
+          {
+            "value": "5",
+            "description": "引脚触发（硬件触发）"
+          },
+          {
+            "value": "6",
+            "description": "操作码触发"
+          },
+          {
+            "value": "7",
+            "description": "continuous_exp（不推荐）"
+          }
+        ]
+      },
+      "PRECHARGE_TIME": {
+        "name": "PRECHARGE_TIME",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "设置CDC预充电时间（10位，寄存器14的位[7:0]和寄存器15的位[1:0]）",
+        "options": [
+          {
+            "value": "1023",
+            "description": "关闭"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "15": {
+    "number": 15,
+    "hex_address": "0x03",
+    "name": "假测量配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_FAKE": {
+        "name": "C_FAKE",
+        "bits": "[5:2]",
+        "bit_high": 5,
+        "bit_low": 2,
+        "description": "CDC的\"假\"或\"预热\"测量数量",
+        "options": [
+          {
+            "value": "0",
+            "description": "无假测量"
+          },
+          {
+            "value": "1",
+            "description": "1次假测量"
+          },
+          {
+            "value": "15",
+            "description": "15次假测量"
+          }
+        ]
+      },
+      "FULLCHARGE_TIME": {
+        "name": "FULLCHARGE_TIME",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "设置CDC满充电时间（10位，寄存器16的位[7:0]和寄存器17的位[1:0]）",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "17": {
+    "number": 17,
+    "hex_address": "0x24",
+    "name": "内部参考电容大小",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_REF_SEL": {
+        "name": "C_REF_SEL",
+        "bits": "[6:2]",
+        "bit_high": 6,
+        "bit_low": 2,
+        "description": "设置片上参考电容（5位）",
+        "options": [
+          {
+            "value": "0",
+            "description": "最小值"
+          },
+          {
+            "value": "1",
+            "description": "约1 pF"
+          },
+          {
+            "value": "31",
+            "description": "最大值（约31 pF）"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "18": {
+    "number": 18,
+    "hex_address": "0x00",
+    "name": "保护驱动配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_G_OP_RUN": {
+        "name": "C_G_OP_RUN",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "保护：运算放大器模式",
+        "options": [
+          {
+            "value": "0",
+            "description": "永久"
+          },
+          {
+            "value": "1",
+            "description": "脉冲（在转换之间将OP设置为睡眠模式）"
+          },
+          {
+            "value": "0",
+            "description": "内部OP"
+          },
+          {
+            "value": "1",
+            "description": "外部OP，PG3作为C_G_MUX_SEL"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "19": {
+    "number": 19,
+    "hex_address": "0x00",
+    "name": "保护运算放大器配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_G_OP_VU": {
+        "name": "C_G_OP_VU",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "保护：运算放大器增益（从感测端口到保护）",
+        "options": [
+          {
+            "value": "0",
+            "description": "× 1.00"
+          },
+          {
+            "value": "1",
+            "description": "× 1.01"
+          },
+          {
+            "value": "2",
+            "description": "× 1.02"
+          },
+          {
+            "value": "3",
+            "description": "× 1.03"
+          },
+          {
+            "value": "0",
+            "description": "0.5 aF"
+          },
+          {
+            "value": "1",
+            "description": "1.0 aF"
+          },
+          {
+            "value": "2",
+            "description": "1.5 aF"
+          },
+          {
+            "value": "3",
+            "description": "2.0 aF"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "20": {
+    "number": 20,
+    "hex_address": "0x00",
+    "name": "RDC时间配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "R_CY": {
+        "name": "R_CY",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "RDC测定的循环时间（取决于OLF频率）",
+        "options": []
+      },
+      "C_G_OP_TR": {
+        "name": "C_G_OP_TR",
+        "bits": "[2:0]",
+        "bit_high": 2,
+        "bit_low": 0,
+        "description": "保护运算放大器电流调整",
+        "options": []
+      },
+      "R_TRIG_PREDIV": {
+        "name": "R_TRIG_PREDIV",
+        "bits": "[9:0]",
+        "bit_high": 9,
+        "bit_low": 0,
+        "description": "预分频器（10位，寄存器21的位[7:0]和寄存器22的位[1:0]）",
+        "options": [
+          {
+            "value": "2",
+            "description": "每2次信号触发"
+          },
+          {
+            "value": "3",
+            "description": "每3次信号触发"
+          },
+          {
+            "value": "1023",
+            "description": "最大因子"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "22": {
+    "number": 22,
+    "hex_address": "0x50",
+    "name": "RDC触发选择",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "R_TRIG_SEL": {
+        "name": "R_TRIG_SEL",
+        "bits": "[6:4]",
+        "bit_high": 6,
+        "bit_low": 4,
+        "description": "RDC触发源选择",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭"
+          },
+          {
+            "value": "1",
+            "description": "定时器触发"
+          },
+          {
+            "value": "3",
+            "description": "引脚触发"
+          },
+          {
+            "value": "5",
+            "description": "CDC异步（推荐）"
+          },
+          {
+            "value": "6",
+            "description": "CDC同步"
+          },
+          {
+            "value": "0",
+            "description": "不平均"
+          },
+          {
+            "value": "1",
+            "description": "4次平均"
+          },
+          {
+            "value": "2",
+            "description": "8次平均"
+          },
+          {
+            "value": "3",
+            "description": "16次平均"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "23": {
+    "number": 23,
+    "hex_address": "0x30",
+    "name": "RDC端口与参考配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "R_PORT_EN": {
+        "name": "R_PORT_EN",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "RDC部分的端口激活",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用"
+          },
+          {
+            "value": "1",
+            "description": "启用"
+          },
+          {
+            "value": "0",
+            "description": "禁用"
+          },
+          {
+            "value": "1",
+            "description": "启用"
+          },
+          {
+            "value": "0",
+            "description": "每次平均有2次假测量周期"
+          },
+          {
+            "value": "1",
+            "description": "每次平均有8次假测量周期"
+          },
+          {
+            "value": "0",
+            "description": "PG0"
+          },
+          {
+            "value": "1",
+            "description": "PG1"
+          },
+          {
+            "value": "2",
+            "description": "PG2"
+          },
+          {
+            "value": "3",
+            "description": "PG3"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "27": {
+    "number": 27,
+    "hex_address": "0x08",
+    "name": "DSP配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "DSP_MOFLO_EN": {
+        "name": "DSP_MOFLO_EN",
+        "bits": "[7:6]",
+        "bit_high": 7,
+        "bit_low": 6,
+        "description": "在GPIO脉冲线中启用单稳态（防抖滤波器）",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭"
+          },
+          {
+            "value": "3",
+            "description": "开启"
+          },
+          {
+            "value": "0",
+            "description": "最快"
+          },
+          {
+            "value": "1",
+            "description": "快"
+          },
+          {
+            "value": "2",
+            "description": "慢（推荐）"
+          },
+          {
+            "value": "3",
+            "description": "最慢"
+          },
+          {
+            "value": "0",
+            "description": "脉冲输出在PG3"
+          },
+          {
+            "value": "1",
+            "description": "脉冲输出在PG1"
+          },
+          {
+            "value": "0",
+            "description": "脉冲输出在PG2"
+          },
+          {
+            "value": "1",
+            "description": "脉冲输出在PG0"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "28": {
+    "number": 28,
+    "hex_address": "0x5A",
+    "name": "看门狗配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "WD_DIS": {
+        "name": "WD_DIS",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "看门狗禁用",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "29": {
+    "number": 29,
+    "hex_address": "0x00",
+    "name": "DSP触发配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "DSP_STARTONPIN": {
+        "name": "DSP_STARTONPIN",
+        "bits": "[7:4]",
+        "bit_high": 7,
+        "bit_low": 4,
+        "description": "启动DSP的引脚掩码（位方式PG0到PG3）",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "30": {
+    "number": 30,
+    "hex_address": "0x82",
+    "name": "中断配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "PG5_INTN_EN": {
+        "name": "PG5_INTN_EN",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "将INTN信号路由到PG5",
+        "options": [
+          {
+            "value": "0",
+            "description": "PG5正常工作"
+          },
+          {
+            "value": "1",
+            "description": "PG5 <== INTN"
+          },
+          {
+            "value": "0",
+            "description": "PG4正常工作"
+          },
+          {
+            "value": "1",
+            "description": "PG4 <== INTN"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "31": {
+    "number": 31,
+    "hex_address": "0x08",
+    "name": "脉冲接口0配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "PI1_TOGGLE_EN": {
+        "name": "PI1_TOGGLE_EN",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "在脉冲接口1输出激活切换触发器",
+        "options": [
+          {
+            "value": "0",
+            "description": "正常工作"
+          },
+          {
+            "value": "1",
+            "description": "切换触发器激活（特别适用于PDM以创建1:1占空比）"
+          },
+          {
+            "value": "0",
+            "description": "正常工作"
+          },
+          {
+            "value": "1",
+            "description": "切换触发器激活（特别适用于PDM以创建1:1占空比）"
+          },
+          {
+            "value": "0",
+            "description": "10位"
+          },
+          {
+            "value": "1",
+            "description": "12位"
+          },
+          {
+            "value": "2",
+            "description": "14位"
+          },
+          {
+            "value": "3",
+            "description": "16位"
+          },
+          {
+            "value": "0",
+            "description": "PWM"
+          },
+          {
+            "value": "1",
+            "description": "PDM"
+          },
+          {
+            "value": "0",
+            "description": "关闭"
+          },
+          {
+            "value": "1",
+            "description": "OLF / 1"
+          },
+          {
+            "value": "2",
+            "description": "OLF / 2"
+          },
+          {
+            "value": "3",
+            "description": "OLF / 4"
+          },
+          {
+            "value": "4",
+            "description": "OX / 1"
+          },
+          {
+            "value": "5",
+            "description": "OX / 2"
+          },
+          {
+            "value": "6",
+            "description": "OX / 4"
+          },
+          {
+            "value": "7",
+            "description": "未定义"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "32": {
+    "number": 32,
+    "hex_address": "0x08",
+    "name": "脉冲接口1配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "PI1_RES": {
+        "name": "PI1_RES",
+        "bits": "[5:4]",
+        "bit_high": 5,
+        "bit_low": 4,
+        "description": "脉冲接口1的分辨率",
+        "options": [
+          {
+            "value": "0",
+            "description": "10位"
+          },
+          {
+            "value": "1",
+            "description": "12位"
+          },
+          {
+            "value": "2",
+            "description": "14位"
+          },
+          {
+            "value": "3",
+            "description": "16位"
+          },
+          {
+            "value": "0",
+            "description": "PWM"
+          },
+          {
+            "value": "1",
+            "description": "PDM"
+          },
+          {
+            "value": "0",
+            "description": "关闭"
+          },
+          {
+            "value": "1",
+            "description": "OLF / 1"
+          },
+          {
+            "value": "2",
+            "description": "OLF / 2"
+          },
+          {
+            "value": "3",
+            "description": "OLF / 4"
+          },
+          {
+            "value": "4",
+            "description": "OX / 1"
+          },
+          {
+            "value": "5",
+            "description": "OX / 2"
+          },
+          {
+            "value": "6",
+            "description": "OX / 4"
+          },
+          {
+            "value": "7",
+            "description": "未定义"
+          }
+        ]
+      }
+    },
+    "notes": [
+      "**注意**: 根据配置数组，寄存器32 = 0x08，但实际应用中可能需要根据具体需求调整脉冲接口1的配置。"
+    ]
+  },
+  "33": {
+    "number": 33,
+    "hex_address": "0x00",
+    "name": "GPIO配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "PG_DIR_IN": {
+        "name": "PG_DIR_IN",
+        "bits": "[7:4]",
+        "bit_high": 7,
+        "bit_low": 4,
+        "description": "通用端口方向切换（输入/输出）",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "34": {
+    "number": 34,
+    "hex_address": "0x47",
+    "name": "带隙与自动启动配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "INT_TRIG_BG": {
+        "name": "INT_TRIG_BG",
+        "bits": "[7]",
+        "bit_high": 7,
+        "bit_low": 7,
+        "description": "读取结束触发带隙",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用"
+          },
+          {
+            "value": "1",
+            "description": "启用"
+          },
+          {
+            "value": "0",
+            "description": "禁用"
+          },
+          {
+            "value": "1",
+            "description": "启用"
+          },
+          {
+            "value": "0",
+            "description": "带隙脉冲模式"
+          },
+          {
+            "value": "1",
+            "description": "带隙永久启用"
+          },
+          {
+            "value": "0",
+            "description": "禁用"
+          },
+          {
+            "value": "1",
+            "description": "启用（用于独立操作，在上电后触发CDC）"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "35": {
+    "number": 35,
+    "hex_address": "0x40",
+    "name": "增益缩放因子",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {},
+    "notes": []
+  },
+  "36": {
+    "number": 36,
+    "hex_address": "0x00",
+    "name": "未使用",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {},
+    "notes": []
+  },
+  "37": {
+    "number": 37,
+    "hex_address": "0x00",
+    "name": "未使用",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {},
+    "notes": []
+  },
+  "38": {
+    "number": 38,
+    "hex_address": "0x00",
+    "name": "带隙时间配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "BG_TIME": {
+        "name": "BG_TIME",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "带隙时间（固件定义）",
+        "options": [
+          {
+            "value": "0",
+            "description": "推荐值"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "39": {
+    "number": 39,
+    "hex_address": "0x71",
+    "name": "脉冲选择配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "PULSE_SEL1": {
+        "name": "PULSE_SEL1",
+        "bits": "[7:4]",
+        "bit_high": 7,
+        "bit_low": 4,
+        "description": "为脉冲接口1选择源（固件定义）",
+        "options": [
+          {
+            "value": "6",
+            "description": "Res6 (PT1/Ref @PCap04_standard)"
+          },
+          {
+            "value": "7",
+            "description": "Res7 (Alu/Ref @PCap04_standard)"
+          },
+          {
+            "value": "6",
+            "description": "Res6 (PT1/Ref @PCap04_standard)"
+          },
+          {
+            "value": "7",
+            "description": "Res7 (Alu/Ref @PCap04_standard)"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "40": {
+    "number": 40,
+    "hex_address": "0x00",
+    "name": "电容感测选择",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "C_SENSE_SEL": {
+        "name": "C_SENSE_SEL",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "电容比率选择（仅PCap04_linearize固件）",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "41": {
+    "number": 41,
+    "hex_address": "0x00",
+    "name": "电阻感测选择",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "R_SENSE_SEL": {
+        "name": "R_SENSE_SEL",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "电阻比率选择（仅PCap04_linearize固件）",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "42": {
+    "number": 42,
+    "hex_address": "0x08",
+    "name": "固件配置与报警选择",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "ALARM1_SELECT": {
+        "name": "ALARM1_SELECT",
+        "bits": "[6]",
+        "bit_high": 6,
+        "bit_low": 6,
+        "description": "报警1选择（仅PCap04_linearize固件）",
+        "options": [
+          {
+            "value": "0",
+            "description": "禁用"
+          },
+          {
+            "value": "1",
+            "description": "激活（结果寄存器Res0到Res7中的值仅在读取先前值后才更新）"
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "47": {
+    "number": 47,
+    "hex_address": "0x01",
+    "name": "运行位配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "RUNBIT": {
+        "name": "RUNBIT",
+        "bits": "[0]",
+        "bit_high": 0,
+        "bit_low": 0,
+        "description": "前端和DSP的开关",
+        "options": [
+          {
+            "value": "0",
+            "description": "关闭 = 芯片系统空闲并受保护"
+          },
+          {
+            "value": "1",
+            "description": "开启 = 保护被移除，系统可以运行"
+          }
+        ]
+      }
+    },
+    "notes": [
+      "**注意**: 在修改寄存器配置之前，必须先将RUNBIT设置为0。"
+    ]
+  },
+  "48": {
+    "number": 48,
+    "hex_address": "0x00",
+    "name": "内存锁配置",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "MEM_LOCK": {
+        "name": "MEM_LOCK",
+        "bits": "[3:0]",
+        "bit_high": 3,
+        "bit_low": 0,
+        "description": "数据安全功能，保护NVRAM的部分区域免于通过SIF读取和写入",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "49": {
+    "number": 49,
+    "hex_address": "0x00",
+    "name": "序列号低字节",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {},
+    "notes": []
+  },
+  "50": {
+    "number": 50,
+    "hex_address": "0x00",
+    "name": "序列号高字节",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {},
+    "notes": []
+  },
+  "54": {
+    "number": 54,
+    "hex_address": "0x00",
+    "name": "内存控制",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {
+      "MEM_CTRL": {
+        "name": "MEM_CTRL",
+        "bits": "[7:0]",
+        "bit_high": 7,
+        "bit_low": 0,
+        "description": "内存控制",
+        "options": []
+      }
+    },
+    "notes": []
+  },
+  "62": {
+    "number": 62,
+    "hex_address": "0x00",
+    "name": "电荷泵配置低字节",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {},
+    "notes": []
+  },
+  "63": {
+    "number": 63,
+    "hex_address": "0x00",
+    "name": "电荷泵配置高字节",
+    "description": "**例如配置**: 0x00（设备特定值，不应修改） TEST指令来确认系统是否正常工作,具体参考手册如下发送0x7E并读取PCAP04的回复信息，0x11表示系统工作正常，否则就表示系统有异常。 串行接口最易通过执行测试读取进行测试: 向SIF写入操作码0x7E并读取一个字节。将该字节与以下模式进行比较: 0x11:预期值，读取周期执行正确 0x88:失败:存在大端/小端序转换 0xEE:失败:在读取周期中所有位被反相 0x77:失败:位被反向且字节序为小端序",
+    "bit_fields": {},
+    "notes": []
+  }
+}
