@@ -1,0 +1,20 @@
+﻿USBMatrixDisplay
+
+
+winexe
+C#
+.cs
+F:\hkt18\桌面\cdc-stm32\CDC_code\PCAP04电路STM32程序\usb - 副本 - 副本\WGUI\obj\Release\net8.0-windows\win-x64\
+USBMatrixDisplay
+none
+false
+TRACE;RELEASE;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
+F:\hkt18\桌面\cdc-stm32\CDC_code\PCAP04电路STM32程序\usb - 副本 - 副本\WGUI\App.xaml
+21368538563
+
+5-1265849357
+200-183323104
+MainWindow.xaml;MatrixDisplayControl.xaml;
+
+False
+

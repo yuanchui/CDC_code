@@ -1,1 +1,0 @@
-E:\.User\Desktop\SPWM_code\CDC_code\PCAP04电路STM32程序\usb - 副本 - 副本\CGUI\bin\Release\net8.0-windows\win-x64\publish\USBMatrixDisplay.exe
