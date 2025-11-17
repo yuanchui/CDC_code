@@ -3,7 +3,8 @@
 # STM32F103 PCap04 16x16 电容矩阵扫描系统
 
 本项目实现了基于 STM32F103 的 PCap04 电容传感器驱动，通过 CD74HC4067SM96 多路复用器实现 16x16 电容矩阵扫描，并通过 USB 2.0 CDC 接口输出电容值数据。
-
+电路
+https://pro.lceda.cn/editor#id=50bcaa4cc5d84eabaa7b5b6ace8e9c53,tab=e5c1a3fee742413a9095109990e6696a@50bcaa4cc5d84eabaa7b5b6ace8e9c53|*c5d3b232ceb043f18867e928f4b9b921@50bcaa4cc5d84eabaa7b5b6ace8e9c53
 ## 项目概述
 
 - **MCU**: STM32F103C8T6
